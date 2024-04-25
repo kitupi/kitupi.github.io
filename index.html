@@ -1,7 +1,37 @@
 <!DOCTYPE html>
+<html lang="es">
 <head>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frame con Imagen</title>
+<style>
+  /* Estilos para el marco fijo en la parte superior */
+  #frame {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    padding: 10px;
+    box-sizing: border-box;
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+  }
+  
+  #frame img {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
 </head>
 <body>
-    hola,wow
+
+<div id="frame">
+  <!-- Aquí va la imagen dentro del marco -->
+  <img src="ruta_de_la_imagen.jpg" alt="Imagen">
+</div>
+
+<!-- Contenido de la página debajo del marco -->
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.</p>
+
 </body>
+</html>
