@@ -22,8 +22,9 @@
             padding: 2px;
             text-align: center;
             position: fixed;
-            bottom: 0;
+            bottom: -50px; /* Inicialmente oculto */
             width: 100%;
+            transition: bottom 0.3s ease; /* Transición suave */
         }
         /* Estilo adicional para la imagen */
         #logo {
@@ -53,5 +54,24 @@
     <footer>
         <p>Powered by JuyDroid &copy; 2024</p>
     </footer>
+
+  <script>
+      // JavaScript para controlar la aparición del footer al hacer scroll hacia arriba
+      var lastScrollTop = 0;
+
+      window.addEventListener("scroll", function() {
+          var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+          if (currentScroll > lastScrollTop) {
+              // Scrolling hacia abajo
+              document.getElementById("footer").style.bottom = "-50px";
+          } else {
+              // Scrolling hacia arriba
+              document.getElementById("footer").style.bottom = "0";
+          }
+
+          lastScrollTop = currentScroll;
+      });
+  </script>
 </body>
 </html>
