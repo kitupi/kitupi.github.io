@@ -1,37 +1,49 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frame con Imagen</title>
-<style>
-  /* Estilos para el marco fijo en la parte superior */
-  #frame {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #026CED;
-    padding: 0px;
-    box-sizing: border-box;
-    z-index: 10;  /*Asegura que esté por encima de otros elementos */
-  }
-  
-  #frame img {
-    max-width: 100%;
-    height: auto;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documento HTML con Header, Main y Footer</title>
+    <style>
+        /* Estilos CSS opcionales para mejorar la apariencia */
+        header {
+            background-color: #026CED;
+            color: #fff;
+            padding: 2px;
+            text-align: center;
+        }
+        main {
+            padding: 20px;
+        }
+        footer {
+            background-color: #026CED;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        /* Estilo adicional para la imagen */
+        #logo {
+            width: 100%; /* Ancho de la imagen */
+            height: auto; /* Altura automática para mantener la proporción */
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <img id="logo" src="imagenes/logo.png" alt="Logo de la empresa">
+    </header>
 
-<div id="frame">
-  <!-- Aquí va la imagen dentro del marco -->
-  <img src="imagenes/logo.png" alt="Imagen">
-</div>
+    <main>
+        <h2>Contenido Principal</h2>
+        <p>Este es el contenido principal de la página.</p>
+        <p>Aquí puedes agregar todo el contenido relevante para tu página.</p>
+    </main>
 
-<!-- Contenido de la página debajo del marco -->
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.</p>
-
+    <footer>
+        <p>Powered by JuyDroid &copy; 2024</p>
+    </footer>
 </body>
 </html>
