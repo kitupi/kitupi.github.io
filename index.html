@@ -13,8 +13,8 @@
             text-align: center;
         }
         main {
-            padding: 2px;
-            background-color: #7ad4a7;
+            padding: 20px;
+            background-color: #c3f1da;
         }
         footer {
             background-color: #026CED;
@@ -32,6 +32,19 @@
             height: auto; /* Altura automática para mantener la proporción */
         }
     </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Montserrat&display=swap">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif; /* Cambiar la fuente del cuerpo del texto */
+        }
+        
+        h3 {
+            font-family: 'Roboto', sans-serif; /* Cambiar la fuente de los títulos */
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QwoV0HHNM2s4kp2mXrW4O7h/ON1+mfbxZWnmkA/XT62O5Ag/gxXzBYK8++NH3Nh2" crossorigin="anonymous">
+
 </head>
 <body>
     <header>
@@ -46,11 +59,32 @@
         <li>Disminuí los riesgos aumentando la seguridad de tus dispositivos.</li>
         <li>Sepa que hacer en caso de haber sido víctima de robo de datos.</li>
         <li>Manténgase al día para evitar dolores de cabeza y pérdida de dinero.</li>
+        <li>Mas detalles click aqui</li>
         </ul>
         <p>Video</p>
+        <p>Haz clic <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">aquí</a> para abrir la ventana modal.</p>
+
         <script src="https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js"
           data-preference-id="28153060-b41b2f99-d1d6-4a39-a6b4-552975d7717c" data-source="button">
         </script>
+
+        <!-- Ventana Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ventana Modal de Ejemplo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Este es un texto de ejemplo que se muestra en la ventana modal. Puedes colocar aquí cualquier contenido que desees.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
     </main>
 
@@ -76,5 +110,10 @@
           lastScrollTop = currentScroll;
       });
   </script>
+  <!-- Bootstrap JS y dependencias Popper.js y jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-7wC2xyB/w7TiFhkqzZYBr8b+eELg2Zswg5RQG9jzP1QQbHTf94xOqdb+d1k2A0yK" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+z8JN1RlOqJ0nPE8vyz9+3nLQYBkcrxv+2JbO0n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-gPz8xxvO1MzE7sfaw5JXgxnoVaYGR8HVSi89k4R0W5k/ALzHa1ebKpFVkY+Ko8fl" crossorigin="anonymous"></script>
+
 </body>
 </html>
