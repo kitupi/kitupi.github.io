@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago con MercadoPago</title>
+</head>
+<body>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <script>
+        const mp = new MercadoPago('TU_CLAVE_PUBLICA', {
+            locale: 'es-AR'
+        });
+
+        mp.checkout({
+            preference: {
+                id: 'ID_DE_PREFERENCIA'
+            },
+            autoOpen: true // Habilita la apertura automática del Checkout Pro
+        });
+    </script>
+</body>
+</html>
