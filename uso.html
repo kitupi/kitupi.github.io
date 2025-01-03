@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modo de Uso y Rubros</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+
+    
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -63,41 +67,7 @@
         }
     </style>
 
-<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
-
 <script>
-    // Configuración de Firebase (reemplaza con tu propia configuración)
-    const firebaseConfig = {
-        apiKey: "AIzaSyCmyeFnhf-1nH8BWOh9zWSMq-0M5i2247o",
-        //authDomain: "TU_PROYECTO.firebaseapp.com",
-        projectId: "abc5-93cb8",
-        //storageBucket: "TU_PROYECTO.appspot.com",
-        //messagingSenderId: "TU_ID",
-        appId: "1:710954699691:android:819da7955ed78c196a60ee"
-    };
-
-    // Inicializar Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // Función para cargar los rubros desde Firestore
-    function cargarRubros() {
-        const rubrosContainer = document.getElementById("rubros");
-        const section = rubrosContainer.querySelector(".section");
-
-        db.collection("Rubros").get()
-            .then((querySnapshot) => {
-                let rubrosHTML = "<ul>";
-                querySnapshot.forEach((doc) => {
-                    rubrosHTML += `<li>${doc.data().nombre}</li>`;
-                });
-                rubrosHTML += "</ul>";
-                section.innerHTML += rubrosHTML;
-            })
-            .catch(error => console.error("Error al obtener rubros:", error));
-    }
-
     // Llamar a la función cuando se muestre la sección Rubros
     document.querySelector("a[href='#']").addEventListener("click", function() {
         if (this.getAttribute("onclick").includes("rubros")) {
