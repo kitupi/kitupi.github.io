@@ -6,42 +6,7 @@
     <title>Modo de Uso y Rubros</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     
-    <script type="module">
-        // Importar Firebase y Firestore
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
-        import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
-
-        // Configuración de Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCmyeFnhf-1nH8BWOh9zWSMq-0M5i2247o",
-            //authDomain: "TU_PROYECTO.firebaseapp.com",
-            projectId: "abc5-93cb8",
-            //storageBucket: "TU_PROYECTO.appspot.com",
-            //messagingSenderId: "TU_ID",
-            //appId: "1:710954699691:android:819da7955ed78c196a60ee"
-        };
-
-        // Inicializar Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Función para obtener los rubros
-        async function obtenerRubros() {
-            const rubrosRef = collection(db, "Rubros");
-            const snapshot = await getDocs(rubrosRef);
-
-            let rubrosHtml = "<ul>";
-            snapshot.forEach((doc) => {
-                rubrosHtml += `<li>${doc.data().nombre}</li>`;
-            });
-            rubrosHtml += "</ul>";
-
-            document.getElementById("lista-rubros").innerHTML = rubrosHtml;
-        }
-
-        // Llamar a la función cuando se cargue la página
-        document.addEventListener("DOMContentLoaded", obtenerRubros);
-    </script>
+    
 
     
     <style>
@@ -180,7 +145,7 @@
         <h1>Rubros</h1>
         <div class="section">
             <h2>Categorías de Productos y Servicios</h2>
-            <p>Aquí puedes encontrar los distintos rubros en los que puedes publicar...</p>
+            <p>sssAquí puedes encontrar los distintos rubros en los que puedes publicar...</p>
             <div id="lista-rubros">
             </div>
         </div>
@@ -193,6 +158,42 @@
             });
             document.getElementById(sectionId).classList.add('active');
         }
+    </script>
+    <script type="module">
+        // Importar Firebase y Firestore
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
+        import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmyeFnhf-1nH8BWOh9zWSMq-0M5i2247o",
+            //authDomain: "TU_PROYECTO.firebaseapp.com",
+            projectId: "abc5-93cb8",
+            //storageBucket: "TU_PROYECTO.appspot.com",
+            //messagingSenderId: "TU_ID",
+            //appId: "1:710954699691:android:819da7955ed78c196a60ee"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Función para obtener los rubros
+        async function obtenerRubros() {
+            const rubrosRef = collection(db, "Rubros");
+            const snapshot = await getDocs(rubrosRef);
+
+            let rubrosHtml = "<ul>";
+            snapshot.forEach((doc) => {
+                rubrosHtml += `<li>${doc.data().nombre}</li>`;
+            });
+            rubrosHtml += "</ul>";
+
+            document.getElementById("lista-rubros").innerHTML = rubrosHtml;
+        }
+
+        // Llamar a la función cuando se cargue la página
+        document.addEventListener("DOMContentLoaded", obtenerRubros);
     </script>
 </body>
 </html>
