@@ -268,12 +268,33 @@
 
     <script>
         function showSection(sectionId) {
+            // Oculta todas las secciones
             document.querySelectorAll('.content').forEach(section => {
                 section.classList.remove('active');
             });
+    
+            // Muestra la sección seleccionada
             document.getElementById(sectionId).classList.add('active');
         }
+    
+        // Detecta el fragmento de la URL al cargar la página
+        document.addEventListener("DOMContentLoaded", function() {
+            const section = window.location.hash.substring(1); // Obtiene 'rubros' de '#rubros'
+            if (section) {
+                showSection(section);
+            }
+        });
+    
+        // Permite que los enlaces <a href="#rubros"> funcionen sin recargar
+        window.addEventListener("hashchange", function() {
+            const section = window.location.hash.substring(1);
+            if (section) {
+                showSection(section);
+            }
+        });
     </script>
+    
+
     <script type="module">
         // Importar Firebase y Firestore
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
