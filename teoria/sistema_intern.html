@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Internacional de Unidades</title>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        .examples {
+            background-color: #e6f7ff;
+            padding: 10px;
+            border-left: 4px solid #0073e6;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sistema Internacional de Unidades</h1>
+
+    <h2>¿Por qué es necesario tener un sistema internacional de medidas?</h2>
+    <p>El Sistema Internacional de Unidades (S.I.) es fundamental porque proporciona un lenguaje común para las mediciones, lo que permite la comunicación y la comparación precisa de resultados científicos, técnicos y comerciales a nivel global. Antes de su establecimiento, existía una diversidad de sistemas que generaban confusión y dificultaban el comercio y la colaboración entre países.</p>
+
+    <h2>Sede y adopción global</h2>
+    <p>Actualmente, la sede central del Sistema Internacional de Unidades está en el "Bureau International des Poids et Mesures" (BIPM), ubicado en Sèvres, Francia. Los países más industrializados, como Estados Unidos, Alemania, China y Japón, junto con casi todos los países del mundo, utilizan el S.I. en sus actividades científicas, técnicas y comerciales.</p>
+
+    <h2>Unidades fundamentales del S.I.</h2>
+    <p>El Sistema Internacional consta de siete unidades fundamentales, que son la base para todas las demás mediciones:</p>
+    <ul>
+        <li><b>Metro (m):</b> Unidad de longitud.</li>
+        <li><b>Kilogramo (kg):</b> Unidad de masa.</li>
+        <li><b>Segundo (s):</b> Unidad de tiempo.</li>
+        <li><b>Amperio (A):</b> Unidad de corriente eléctrica.</li>
+        <li><b>Kelvin (K):</b> Unidad de temperatura.</li>
+        <li><b>Mol (mol):</b> Unidad de cantidad de sustancia.</li>
+        <li><b>Candela (cd):</b> Unidad de intensidad luminosa.</li>
+    </ul>
+
+    <h2>Unidades derivadas</h2>
+    <p>Las unidades derivadas son combinaciones de las unidades fundamentales. Ejemplos incluyen:</p>
+    <ul>
+        <li><b>Newton (N):</b> Fuerza, equivalente a \( kg \cdot m / s^2 \).</li>
+        <li><b>Joule (J):</b> Energía, equivalente a \( N \cdot m \).</li>
+        <li><b>Watt (W):</b> Potencia, equivalente a \( J / s \).</li>
+    </ul>
+
+    <h2>Múltiplos y submúltiplos</h2>
+    <p>El S.I. también define prefijos para indicar múltiplos y submúltiplos de las unidades. Aquí está la escala completa para longitudes:</p>
+    <ul>
+        <li><b>Kilómetro (km):</b> 1.000 metros.</li>
+        <li><b>Hectómetro (hm):</b> 100 metros.</li>
+        <li><b>Decámetro (dam):</b> 10 metros.</li>
+        <li><b>Metro (m):</b> Unidad base.</li>
+        <li><b>Decímetro (dm):</b> 0.1 metros.</li>
+        <li><b>Centímetro (cm):</b> 0.01 metros.</li>
+        <li><b>Milímetro (mm):</b> 0.001 metros.</li>
+    </ul>
+    <p>Para otras unidades, como el de masa, intensidad lumínica, corriente eléctrica etc., se utilizan prefijos similares.</p>
+    <p>Para convertir unidades, seguimos esta idea, poniendo la escala en forma horizontal tenemos:</p>
+    <p>kilo -  hecto - deca - (unid. base) - deci - centi - mili</p>
+    <ul>
+        <li>Hacia la derecha de la escala, multiplicamos por 10 por cada paso.</li>
+        <li>Hacia la izquierda de la escala, dividimos por 10 por cada paso.</li>
+    </ul>
+    <h3>Ejemplo 1: Convertir de metros a kilómetros</h3>
+    <p>Para convertir 500 metros a kilómetros:</p>
+    <ol>
+        <li>Ubicamos "metro" y "kilómetro" en la escala.</li>
+        <li>Contamos 3 pasos a la izquierda (decámetro, hectómetro, kilómetro).</li>
+        <li>Dividimos 500 entre \(10^3 = 1.000\):</li>
+    </ol>
+    <p><b>Resultado:</b> 500 metros = 0.5 kilómetros.</p>
+
+    <h3>Ejemplo 2: Convertir de decámetros a centímetros</h3>
+    <p>Para convertir 2 decámetros a centímetros:</p>
+    <ol>
+        <li>Ubicamos "decámetro" y "centímetro" en la escala.</li>
+        <li>Contamos 3 pasos a la derecha (metro, decímetro, centímetro).</li>
+        <li>Multiplicamos 2 por \(10^3 = 1.000\):</li>
+    </ol>
+    <p><b>Resultado:</b> 2 decámetros = 2000 centímetros.</p>
+
+    <h2>Conversión de unidades de superficie y volumen</h2>
+    <p>El procedimiento de conversión es similar al de longitudes, pero debemos considerar que:</p>
+    <ul>
+        <li>Para superficies (m<sup>2</sup>), movemos el punto decimal dos veces más por cada paso.</li>
+        <li>Para volúmenes (m<sup>3</sup>), movemos el punto decimal tres veces más por cada paso.</li>
+    </ul>
+    <p>Por ejemplo, para convertir:</p>
+    <ul>
+        <li>1 metro cuadrado a centímetros cuadrados, multiplicamos por \(10^4 = 10.000\).</li>
+        <li>1 metro cúbico a milímetros cúbicos, multiplicamos por \(10^9\).</li>
+    </ul>
+</body>
+</html>
