@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción a la Cinemática</title>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        .examples {
+            background-color: #e6f7ff;
+            padding: 10px;
+            border-left: 4px solid #0073e6;
+            margin: 15px 0;
+        }
+        .special-h2 {
+            color: #800020;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Introducción a la Cinemática</h1>
+
+    <p>La cinemática es una rama de la física que se encarga de describir el movimiento de los cuerpos sin considerar las causas que lo producen. Para ello, utiliza conceptos como posición, velocidad y aceleración, y las relaciona con el tiempo a través de ecuaciones matemáticas.</p>
+
+    <h2 class="special-h2">Movimiento Rectilíneo Uniforme (MRU)</h2>
+    <p>El MRU es un tipo de movimiento en línea recta donde la velocidad es constante, lo que significa que la aceleración es cero. La posición del objeto se calcula como:</p>
+    <p>\( x = x_0 + v(t - t_0) \)</p>
+    <p>Cuando los parámetros iniciales son cero (\( x_0 = 0 \) y \( t_0 = 0 \)):</p>
+    <p>\( x = v \cdot t \)</p>
+    <p><strong>Unidades:</strong></p>
+    <ul>
+        <li>Posición \( x \): metros (m)</li>
+        <li>Velocidad \( v \): metros por segundo (\( m/s \))</li>
+    </ul>
+
+    <h2 class="special-h2">Movimiento Rectilíneo Uniformemente Acelerado (MRUA)</h2>
+    <p>El MRUA describe un movimiento en línea recta con aceleración constante. Las ecuaciones principales son:</p>
+    <p>\( x = x_0 + v_0(t - t_0) + \frac{1}{2}a(t - t_0)^2 \)</p>
+    <p>\( v = v_0 + a(t - t_0) \)</p>
+    <p>Cuando los parámetros iniciales son cero (\( x_0 = 0 \), \( v_0 = 0 \), \( t_0 = 0 \)):</p>
+    <p>\( x = \frac{1}{2}a t^2 \)</p>
+    <p>\( v = a \cdot t \)</p>
+    <p><strong>Unidades:</strong></p>
+    <ul>
+        <li>Aceleración \( a \): metros por segundo al cuadrado (\( m/s^2 \))</li>
+        <li>Velocidad \( v \): metros por segundo (\( m/s \))</li>
+    </ul>
+    <p>Es importante notar que una velocidad o aceleración negativa no necesariamente indica desaceleración, sino que el cuerpo se mueve en la dirección negativa del eje de referencia.</p>
+
+    <h2 class="special-h2">Movimiento Circular Uniforme (MCU)</h2>
+    <p>En el MCU, un objeto se mueve en una trayectoria circular con velocidad angular constante. Las ecuaciones principales son:</p>
+    <p>\( \theta = \theta_0 + \omega(t - t_0) \)</p>
+    <p>Cuando \( \theta_0 = 0 \) y \( t_0 = 0 \):</p>
+    <p>\( \theta = \omega \cdot t \)</p>
+    <p><strong>Periodo (\( T \)):</strong> Es el tiempo que tarda en completar una vuelta. \( T = \frac{1}{f} \), donde \( f \) es la frecuencia.</p>
+    <p><strong>Frecuencia (\( f \)):</strong> Es el número de vueltas por segundo y se mide en hertz (Hz).</p>
+
+    <h2 class="special-h2">Movimiento Circular Uniformemente Acelerado (MCUA)</h2>
+    <p>En el MCUA, la velocidad angular varía debido a una aceleración angular constante. Las ecuaciones son:</p>
+    <p>\( \theta = \theta_0 + \omega_0(t - t_0) + \frac{1}{2}\alpha(t - t_0)^2 \)</p>
+    <p>\( \omega = \omega_0 + \alpha(t - t_0) \)</p>
+    <p>Cuando \( \theta_0 = 0 \), \( \omega_0 = 0 \) y \( t_0 = 0 \):</p>
+    <p>\( \theta = \frac{1}{2}\alpha t^2 \)</p>
+    <p><strong>Unidades:</strong></p>
+    <ul>
+        <li>Aceleración angular \( \alpha \): radianes por segundo al cuadrado (\( rad/s^2 \))</li>
+        <li>Velocidad angular \( \omega \): radianes por segundo (\( rad/s \))</li>
+    </ul>
+
+    <h2 class="special-h2">Tiro parabólico</h2>
+    <p>El tiro parabólico combina un movimiento rectilíneo uniforme en el eje \( x \) y un MRUA en el eje \( y \). Las ecuaciones son:</p>
+    <p>\( x = v_0 \cos(\theta) \cdot t \)</p>
+    <p>\( y = y_0 + v_0 \sin(\theta)t - \frac{1}{2}g t^2 \)</p>
+    <p>Cuando \( \theta = 0 \), estamos en el caso de un tiro vertical. Las ecuaciones se simplifican a:</p>
+    <p>\( y = y_0 - \frac{1}{2}g t^2 \)</p>
+    <p><strong>Unidades:</strong></p>
+    <ul>
+        <li>Gravedad \( g \): \( 9.8\,m/s^2 \)</li>
+    </ul>
+
+    <h2 class="special-h2">Conclusión</h2>
+    <p>La cinemática nos permite predecir y analizar el movimiento de los objetos usando ecuaciones matemáticas claras. Practica con problemas variados para entender mejor cómo se aplican estas ecuaciones a situaciones reales.</p>
+</body>
+</html>
