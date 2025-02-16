@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Física de las Colisiones</title>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        .examples {
+            background-color: #e6f7ff;
+            padding: 10px;
+            border-left: 4px solid #0073e6;
+            margin: 15px 0;
+        }
+        .special-h2 {
+            color: #800020;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Física de las Colisiones</h1>
+
+    <h2 class="special-h2">Concepto de Colisión</h2>
+    <p>Una colisión ocurre cuando dos o más cuerpos interactúan a través de fuerzas en un intervalo de tiempo relativamente corto.</p>
+
+    <h2 class="special-h2">Cantidad de Movimiento</h2>
+    <p>La cantidad de movimiento o momento lineal se define como:</p>
+    <p>\( p = m v \)</p>
+    <p>Donde:</p>
+    <ul>
+        <li>\( m \): masa del cuerpo (kg)</li>
+        <li>\( v \): velocidad del cuerpo (m/s)</li>
+    </ul>
+    
+    <h2 class="special-h2">Impulso y Cambio de Momento</h2>
+    <p>El impulso es la variación de la cantidad de movimiento:</p>
+    <p>\( I = \Delta p = F \Delta t \)</p>
+    <p>Esta ecuación nos indica que una fuerza aplicada en un tiempo corto puede producir grandes cambios en la velocidad de un cuerpo.</p>
+
+    <h2 class="special-h2">Centro de Masa</h2>
+    <p>El centro de masa es el punto donde se puede considerar que está concentrada toda la masa del sistema. Su posición para dos partículas está dada por:</p>
+    <p>\( x_{cm} = \frac{m_1 x_1 + m_2 x_2}{m_1 + m_2} \)</p>
+
+    <h2 class="special-h2">Teoremas de Conservación</h2>
+    <p>Las colisiones se analizan mediante la conservación de la cantidad de movimiento y, en algunos casos, de la energía mecánica:</p>
+    <p>\( m_1 v_1 + m_2 v_2 = m_1 v_1' + m_2 v_2' \)</p>
+    <p>En colisiones elásticas, se conserva también la energía cinética:</p>
+    <p>\( \frac{1}{2} m_1 v_1^2 + \frac{1}{2} m_2 v_2^2 = \frac{1}{2} m_1 v_1'^2 + \frac{1}{2} m_2 v_2'^2 \)</p>
+
+    <h2 class="special-h2">Tipos de Colisiones</h2>
+    <h3>Colisión Elástica</h3>
+    <p>Se conserva la cantidad de movimiento y la energía cinética.</p>
+    
+    <h3>Colisión Parcialmente Elástica</h3>
+    <p>Se conserva la cantidad de movimiento, pero parte de la energía cinética se disipa en forma de calor o deformaciones.</p>
+    
+    <h3>Colisión Plástica</h3>
+    <p>Los cuerpos quedan unidos después del choque, y la energía cinética inicial no se conserva.</p>
+
+    <h2 class="special-h2">Aplicaciones en la Vida Diaria</h2>
+    <ul>
+        <li>Accidentes automovilísticos.</li>
+        <li>Choques de bolas de billar.</li>
+        <li>Colisiones entre partículas en aceleradores.</li>
+    </ul>
+
+    <h2 class="special-h2">Conclusión</h2>
+    <p>Las colisiones son fundamentales en la física y tienen aplicaciones prácticas en muchas áreas, desde la ingeniería hasta la astrofísica.</p>
+</body>
+</html>
