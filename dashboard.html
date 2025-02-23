@@ -8,11 +8,11 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <!-- Estilos básicos -->
   <style>
     table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 20px;
     }
     th, td {
       border: 1px solid #ddd;
@@ -30,7 +30,7 @@
 <body>
   <h1>Dashboard - Sistema de Registros</h1>
   
-  <!-- Tabla con 5 registros de ejemplo -->
+  <!-- Tabla que se llenará con los datos de Firestore -->
   <table id="registrosTable">
     <thead>
       <tr>
@@ -42,55 +42,15 @@
         <th>Acción</th>
       </tr>
     </thead>
-    <tbody>
-      <!-- Cada fila tiene un data-doc-id que representa el ID del documento en Firestore -->
-      <tr data-doc-id="doc1">
-        <td contenteditable="true">Juan</td>
-        <td contenteditable="true">Pérez</td>
-        <td contenteditable="true">12345678</td>
-        <td contenteditable="true">001</td>
-        <td contenteditable="true">Sí</td>
-        <td><button onclick="guardarCambios(this)">Guardar</button></td>
-      </tr>
-      <tr data-doc-id="doc2">
-        <td contenteditable="true">María</td>
-        <td contenteditable="true">Gómez</td>
-        <td contenteditable="true">87654321</td>
-        <td contenteditable="true">002</td>
-        <td contenteditable="true">No</td>
-        <td><button onclick="guardarCambios(this)">Guardar</button></td>
-      </tr>
-      <tr data-doc-id="doc3">
-        <td contenteditable="true">Carlos</td>
-        <td contenteditable="true">Ramírez</td>
-        <td contenteditable="true">11223344</td>
-        <td contenteditable="true">003</td>
-        <td contenteditable="true">Sí</td>
-        <td><button onclick="guardarCambios(this)">Guardar</button></td>
-      </tr>
-      <tr data-doc-id="doc4">
-        <td contenteditable="true">Ana</td>
-        <td contenteditable="true">Martínez</td>
-        <td contenteditable="true">44332211</td>
-        <td contenteditable="true">004</td>
-        <td contenteditable="true">No</td>
-        <td><button onclick="guardarCambios(this)">Guardar</button></td>
-      </tr>
-      <tr data-doc-id="doc5">
-        <td contenteditable="true">Luis</td>
-        <td contenteditable="true">Sánchez</td>
-        <td contenteditable="true">55667788</td>
-        <td contenteditable="true">005</td>
-        <td contenteditable="true">Sí</td>
-        <td><button onclick="guardarCambios(this)">Guardar</button></td>
-      </tr>
+    <tbody id="registrosBody">
+      <!-- Las filas se generarán dinámicamente -->
     </tbody>
   </table>
-
-  <!-- Cargamos el archivo actualizador.js (ubicado en la carpeta functions) -->
+  
+  <!-- Cargamos el archivo de funciones externas -->
   <script src="functions/actualizador.js"></script>
   
-  <!-- Script principal con inicialización y funciones adicionales -->
+  <!-- Script principal -->
   <script>
     // Configuración de Firebase (reemplaza appId con el valor correcto)
     const firebaseConfig = {
@@ -107,8 +67,32 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Función para guardar cambios de la fila
-    // Esta función leerá las celdas editadas y, para cada cambio, llamará a actualizarDato
+    // Función para cargar los registros desde Firestore y mostrarlos en la tabla
+    function cargarRegistros() {
+      db.collection("registros").get()
+        .then((querySnapshot) => {
+          const tbody = document.getElementById("registrosBody");
+          tbody.innerHTML = ""; // Limpiar contenido previo
+          querySnapshot.forEach((doc) => {
+            const registro = doc.data();
+            // Crea una fila con el atributo data-doc-id para identificar el documento
+            const row = document.createElement("tr");
+            row.setAttribute("data-doc-id", doc.id);
+            row.innerHTML = `
+              <td contenteditable="true">${registro.nombre || ""}</td>
+              <td contenteditable="true">${registro.apellido || ""}</td>
+              <td contenteditable="true">${registro.dni || ""}</td>
+              <td contenteditable="true">${registro.legajo || ""}</td>
+              <td contenteditable="true">${registro.certificado || ""}</td>
+              <td><button onclick="guardarCambios(this)">Guardar</button></td>
+            `;
+            tbody.appendChild(row);
+          });
+        })
+        .catch(error => console.error("Error al cargar registros:", error));
+    }
+
+    // Función para guardar cambios de una fila y registrar modificaciones
     function guardarCambios(btn) {
       const row = btn.parentElement.parentElement;
       const docId = row.getAttribute("data-doc-id");
@@ -123,19 +107,18 @@
         certificado: celdas[4].innerText.trim()
       };
 
-      // Primero, obtenemos el documento actual para comparar los datos
+      // Obtener el documento actual para comparar valores
       const docRef = db.collection("registros").doc(docId);
       docRef.get().then(doc => {
         if (doc.exists) {
           const datosAntiguos = doc.data();
-          // Para cada campo, si hay diferencia, se llama a la función actualizarDato
+          // Para cada campo, si hay diferencia, llamar a actualizarDato (definida en functions/actualizador.js)
           for (const campo in nuevosDatos) {
             if (datosAntiguos[campo] !== nuevosDatos[campo]) {
-              // La función actualizarDato debe estar definida en functions/actualizador.js
               actualizarDato(docId, campo, datosAntiguos[campo], nuevosDatos[campo]);
             }
           }
-          // Actualizamos el documento en Firestore
+          // Actualizar el documento con los nuevos datos
           docRef.update(nuevosDatos)
             .then(() => {
               alert("Cambios guardados y registrados.");
@@ -148,6 +131,16 @@
         }
       }).catch(error => console.error("Error al obtener el documento:", error));
     }
+
+    // Al cargar la página, verificamos que el usuario esté autenticado y cargamos los registros
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        cargarRegistros();
+      } else {
+        // Redirige al login si no hay usuario autenticado
+        window.location.href = "index.html";
+      }
+    });
   </script>
 </body>
 </html>
