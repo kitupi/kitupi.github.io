@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Sistema de Registros</title>
-  <!-- Carga de Firebase en versión compat para mantener el uso de firebase.* -->
+  <!-- Carga de Firebase en versión compat -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <!-- Estilos básicos -->
   <style>
     table {
       width: 100%;
@@ -86,7 +87,10 @@
     </tbody>
   </table>
 
-  <!-- Script con la configuración de Firebase, la lectura y las funciones de actualización -->
+  <!-- Cargamos el archivo actualizador.js (ubicado en la carpeta functions) -->
+  <script src="functions/actualizador.js"></script>
+  
+  <!-- Script principal con inicialización y funciones adicionales -->
   <script>
     // Configuración de Firebase (reemplaza appId con el valor correcto)
     const firebaseConfig = {
@@ -103,75 +107,46 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Función para guardar los cambios de una fila y registrar las modificaciones
+    // Función para guardar cambios de la fila
+    // Esta función leerá las celdas editadas y, para cada cambio, llamará a actualizarDato
     function guardarCambios(btn) {
-      // Obtener la fila donde se presionó el botón
       const row = btn.parentElement.parentElement;
       const docId = row.getAttribute("data-doc-id");
-
-      // Extraer los valores nuevos de cada celda (suponiendo el orden: Nombre, Apellido, DNI, Legajo, Certificado)
       const celdas = row.querySelectorAll("td");
-      const nuevoNombre = celdas[0].innerText.trim();
-      const nuevoApellido = celdas[1].innerText.trim();
-      const nuevoDNI = celdas[2].innerText.trim();
-      const nuevoLegajo = celdas[3].innerText.trim();
-      const nuevoCertificado = celdas[4].innerText.trim();
+      
+      // Se asume el orden: Nombre, Apellido, DNI, Legajo, Certificado
+      const nuevosDatos = {
+        nombre: celdas[0].innerText.trim(),
+        apellido: celdas[1].innerText.trim(),
+        dni: celdas[2].innerText.trim(),
+        legajo: celdas[3].innerText.trim(),
+        certificado: celdas[4].innerText.trim()
+      };
 
-      // Obtener el documento actual para comparar los valores anteriores
+      // Primero, obtenemos el documento actual para comparar los datos
       const docRef = db.collection("registros").doc(docId);
       docRef.get().then(doc => {
         if (doc.exists) {
           const datosAntiguos = doc.data();
-          // Actualizamos el documento con los nuevos valores
-          docRef.update({
-            nombre: nuevoNombre,
-            apellido: nuevoApellido,
-            dni: nuevoDNI,
-            legajo: nuevoLegajo,
-            certificado: nuevoCertificado
-          }).then(() => {
-            // Para cada campo, si el valor cambió, registramos la modificación
-            if (datosAntiguos.nombre !== nuevoNombre) {
-              registrarCambio(docId, "nombre", datosAntiguos.nombre, nuevoNombre);
+          // Para cada campo, si hay diferencia, se llama a la función actualizarDato
+          for (const campo in nuevosDatos) {
+            if (datosAntiguos[campo] !== nuevosDatos[campo]) {
+              // La función actualizarDato debe estar definida en functions/actualizador.js
+              actualizarDato(docId, campo, datosAntiguos[campo], nuevosDatos[campo]);
             }
-            if (datosAntiguos.apellido !== nuevoApellido) {
-              registrarCambio(docId, "apellido", datosAntiguos.apellido, nuevoApellido);
-            }
-            if (datosAntiguos.dni !== nuevoDNI) {
-              registrarCambio(docId, "dni", datosAntiguos.dni, nuevoDNI);
-            }
-            if (datosAntiguos.legajo !== nuevoLegajo) {
-              registrarCambio(docId, "legajo", datosAntiguos.legajo, nuevoLegajo);
-            }
-            if (datosAntiguos.certificado !== nuevoCertificado) {
-              registrarCambio(docId, "certificado", datosAntiguos.certificado, nuevoCertificado);
-            }
-            alert("Cambios guardados y registrados.");
-          }).catch(error => {
-            console.error("Error al actualizar el documento:", error);
-          });
+          }
+          // Actualizamos el documento en Firestore
+          docRef.update(nuevosDatos)
+            .then(() => {
+              alert("Cambios guardados y registrados.");
+            })
+            .catch(error => {
+              console.error("Error al actualizar el documento:", error);
+            });
         } else {
           console.error("El documento no existe.");
         }
       }).catch(error => console.error("Error al obtener el documento:", error));
-    }
-
-    // Función para registrar el cambio en la colección 'historial_cambios'
-    function registrarCambio(docId, campo, datoAnterior, datoNuevo) {
-      // Construir el objeto del cambio
-      const cambio = {
-        registro_id: docId,
-        accion: "modificación",
-        campo_modificado: campo,
-        dato_anterior: datoAnterior,
-        dato_nuevo: datoNuevo,
-        fecha: new Date().toISOString(),
-        realizado_por: auth.currentUser ? auth.currentUser.email : "desconocido"
-      };
-
-      db.collection("historial_cambios").add(cambio)
-        .then(() => console.log("Cambio registrado:", cambio))
-        .catch(error => console.error("Error al registrar el cambio:", error));
     }
   </script>
 </body>
