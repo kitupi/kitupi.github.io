@@ -59,7 +59,7 @@
       projectId: "registro-seguro-b53b2",
       storageBucket: "registro-seguro-b53b2.appspot.com",
       messagingSenderId: "631744075010",
-      appId: "1:631744075010:web:XXXXXXXXXXXX" // Reemplaza con tu appId real
+      appId: "631744075010" // Reemplaza con tu appId real
     };
 
     // Inicializar Firebase
@@ -135,10 +135,10 @@
     // Al cargar la página, verificamos que el usuario esté autenticado y cargamos los registros
     auth.onAuthStateChanged(user => {
       if (user) {
-        cargarRegistros();
+        cargarRegistros(); // carga la tabla
       } else {
         // Redirige al login si no hay usuario autenticado
-        window.location.href = "index.html";
+        window.location.href = "registracion.html";
       }
     });
   </script>
