@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Sistema de Registros</title>
+  <!-- Carga de Firebase en versión compat para mantener el uso de firebase.* -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    td[contenteditable="true"] {
+      background-color: #fffce6;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dashboard - Sistema de Registros</h1>
+  
+  <!-- Tabla con 5 registros de ejemplo -->
+  <table id="registrosTable">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>DNI</th>
+        <th>Número de Legajo</th>
+        <th>Certificado de Curso</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Cada fila tiene un data-doc-id que representa el ID del documento en Firestore -->
+      <tr data-doc-id="doc1">
+        <td contenteditable="true">Juan</td>
+        <td contenteditable="true">Pérez</td>
+        <td contenteditable="true">12345678</td>
+        <td contenteditable="true">001</td>
+        <td contenteditable="true">Sí</td>
+        <td><button onclick="guardarCambios(this)">Guardar</button></td>
+      </tr>
+      <tr data-doc-id="doc2">
+        <td contenteditable="true">María</td>
+        <td contenteditable="true">Gómez</td>
+        <td contenteditable="true">87654321</td>
+        <td contenteditable="true">002</td>
+        <td contenteditable="true">No</td>
+        <td><button onclick="guardarCambios(this)">Guardar</button></td>
+      </tr>
+      <tr data-doc-id="doc3">
+        <td contenteditable="true">Carlos</td>
+        <td contenteditable="true">Ramírez</td>
+        <td contenteditable="true">11223344</td>
+        <td contenteditable="true">003</td>
+        <td contenteditable="true">Sí</td>
+        <td><button onclick="guardarCambios(this)">Guardar</button></td>
+      </tr>
+      <tr data-doc-id="doc4">
+        <td contenteditable="true">Ana</td>
+        <td contenteditable="true">Martínez</td>
+        <td contenteditable="true">44332211</td>
+        <td contenteditable="true">004</td>
+        <td contenteditable="true">No</td>
+        <td><button onclick="guardarCambios(this)">Guardar</button></td>
+      </tr>
+      <tr data-doc-id="doc5">
+        <td contenteditable="true">Luis</td>
+        <td contenteditable="true">Sánchez</td>
+        <td contenteditable="true">55667788</td>
+        <td contenteditable="true">005</td>
+        <td contenteditable="true">Sí</td>
+        <td><button onclick="guardarCambios(this)">Guardar</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Script con la configuración de Firebase, la lectura y las funciones de actualización -->
+  <script>
+    // Configuración de Firebase (reemplaza appId con el valor correcto)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCxgbhSCWzelZzAqr137fvFIQGb9n1ddUw",
+      authDomain: "registro-seguro-b53b2.firebaseapp.com",
+      projectId: "registro-seguro-b53b2",
+      storageBucket: "registro-seguro-b53b2.appspot.com",
+      messagingSenderId: "631744075010",
+      appId: "1:631744075010:web:XXXXXXXXXXXX" // Reemplaza con tu appId real
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Función para guardar los cambios de una fila y registrar las modificaciones
+    function guardarCambios(btn) {
+      // Obtener la fila donde se presionó el botón
+      const row = btn.parentElement.parentElement;
+      const docId = row.getAttribute("data-doc-id");
+
+      // Extraer los valores nuevos de cada celda (suponiendo el orden: Nombre, Apellido, DNI, Legajo, Certificado)
+      const celdas = row.querySelectorAll("td");
+      const nuevoNombre = celdas[0].innerText.trim();
+      const nuevoApellido = celdas[1].innerText.trim();
+      const nuevoDNI = celdas[2].innerText.trim();
+      const nuevoLegajo = celdas[3].innerText.trim();
+      const nuevoCertificado = celdas[4].innerText.trim();
+
+      // Obtener el documento actual para comparar los valores anteriores
+      const docRef = db.collection("registros").doc(docId);
+      docRef.get().then(doc => {
+        if (doc.exists) {
+          const datosAntiguos = doc.data();
+          // Actualizamos el documento con los nuevos valores
+          docRef.update({
+            nombre: nuevoNombre,
+            apellido: nuevoApellido,
+            dni: nuevoDNI,
+            legajo: nuevoLegajo,
+            certificado: nuevoCertificado
+          }).then(() => {
+            // Para cada campo, si el valor cambió, registramos la modificación
+            if (datosAntiguos.nombre !== nuevoNombre) {
+              registrarCambio(docId, "nombre", datosAntiguos.nombre, nuevoNombre);
+            }
+            if (datosAntiguos.apellido !== nuevoApellido) {
+              registrarCambio(docId, "apellido", datosAntiguos.apellido, nuevoApellido);
+            }
+            if (datosAntiguos.dni !== nuevoDNI) {
+              registrarCambio(docId, "dni", datosAntiguos.dni, nuevoDNI);
+            }
+            if (datosAntiguos.legajo !== nuevoLegajo) {
+              registrarCambio(docId, "legajo", datosAntiguos.legajo, nuevoLegajo);
+            }
+            if (datosAntiguos.certificado !== nuevoCertificado) {
+              registrarCambio(docId, "certificado", datosAntiguos.certificado, nuevoCertificado);
+            }
+            alert("Cambios guardados y registrados.");
+          }).catch(error => {
+            console.error("Error al actualizar el documento:", error);
+          });
+        } else {
+          console.error("El documento no existe.");
+        }
+      }).catch(error => console.error("Error al obtener el documento:", error));
+    }
+
+    // Función para registrar el cambio en la colección 'historial_cambios'
+    function registrarCambio(docId, campo, datoAnterior, datoNuevo) {
+      // Construir el objeto del cambio
+      const cambio = {
+        registro_id: docId,
+        accion: "modificación",
+        campo_modificado: campo,
+        dato_anterior: datoAnterior,
+        dato_nuevo: datoNuevo,
+        fecha: new Date().toISOString(),
+        realizado_por: auth.currentUser ? auth.currentUser.email : "desconocido"
+      };
+
+      db.collection("historial_cambios").add(cambio)
+        .then(() => console.log("Cambio registrado:", cambio))
+        .catch(error => console.error("Error al registrar el cambio:", error));
+    }
+  </script>
+</body>
+</html>
