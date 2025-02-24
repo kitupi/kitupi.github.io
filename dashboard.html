@@ -81,7 +81,7 @@
           tbody.innerHTML = ""; // Limpiar contenido previo
           querySnapshot.forEach((doc) => {
             const registro = doc.data();
-            // Crea una fila con el atributo data-doc-id para identificar el documento
+            // Creamos una fila con el atributo data-doc-id usando el id real del documento
             const row = document.createElement("tr");
             row.setAttribute("data-doc-id", doc.id);
             row.innerHTML = `
@@ -97,6 +97,7 @@
         })
         .catch(error => console.error("Error al cargar registros:", error));
     }
+
 
     // Función para guardar cambios de una fila y registrar modificaciones
     function guardarCambios(btn) {
