@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboardd - Sistema de Registros</title>
+  <title>Dashboard - Sistema de Registros</title>
   <!-- Carga de Firebase en versión compat -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <h1>Dashboard - Sistema de Registros</h1>
+  <h1>Dashboardd - Sistema de Registros</h1>
 
   <!-- Botón para cargar datos CSV -->
 <div style="margin-bottom: 20px;">
@@ -137,7 +137,7 @@
           console.error("El documento no existe.");
         }
       }).catch(error => console.error("Error al obtener el documento:", error));
-  }
+    }
 
 
     // Al cargar la página, verificamos que el usuario esté autenticado y cargamos los registros
@@ -155,64 +155,89 @@
       document.getElementById("inputCSV").click();
     });
     
-    document.getElementById("inputCSV").addEventListener("change", function(event) {
+    document.getElementById("inputCSV").addEventListener("change", function (event) {
       const file = event.target.files[0];
       if (!file) return;
-      
+    
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         const contenido = e.target.result;
         procesarCSV(contenido);
       };
-      reader.onerror = function(e) {
+      reader.onerror = function (e) {
         console.error("Error al leer el archivo:", e);
       };
       reader.readAsText(file);
     });
     
     function procesarCSV(csvText) {
-      // Limpiar y dividir por saltos de línea
       const lineas = csvText.trim().split(/\r?\n/);
       if (lineas.length < 2) {
         alert("El archivo CSV no tiene datos.");
         return;
       }
-      
-      // Detectar el delimitador usando la primera línea (encabezados)
+    
       const primerLinea = lineas[0];
       const cantidadComas = (primerLinea.match(/,/g) || []).length;
       const cantidadPuntoYComa = (primerLinea.match(/;/g) || []).length;
-      // Si hay más punto y coma que comas, usaremos punto y coma; de lo contrario, coma.
       const delimitador = cantidadPuntoYComa > cantidadComas ? ";" : ",";
-      
-      // Dividir la primera línea para obtener los encabezados
+    
       const encabezados = primerLinea.split(delimitador).map(header => header.trim());
-      
-      // Procesar cada línea (omitimos la primera)
+      const registros = [];
+    
       for (let i = 1; i < lineas.length; i++) {
         const campos = lineas[i].split(delimitador);
         if (campos.length !== encabezados.length) {
-          console.warn(`La línea ${i+1} no coincide en cantidad de campos. Se ignora.`);
+          console.warn(`La línea ${i + 1} no coincide en cantidad de campos. Se ignora.`);
           continue;
         }
-        
+    
         let registro = {};
         encabezados.forEach((header, index) => {
-          registro[header] = campos[index].trim();
+          registro[header.toLowerCase()] = campos[index].trim(); // Normaliza encabezados a minúsculas
         });
-        
-        // Insertar en Firestore. Se usa add() para generar un ID automáticamente.
-        db.collection("registros").add(registro)
-          .then(() => {
-            console.log("Registro agregado:", registro);
-          })
-          .catch(error => console.error("Error al agregar registro:", error));
+    
+        registros.push(registro);
       }
-      
-      alert("Carga de datos finalizada.");
+    
+      verificarDuplicadosYAgregar(registros);
+    }
+    
+    function verificarDuplicadosYAgregar(registros) {
+      const dniList = registros.map(registro => registro.dni);
+    
+      db.collection("registros")
+        .where("dni", "in", dniList)
+        .get()
+        .then(querySnapshot => {
+          const dnisExistentes = new Set();
+          querySnapshot.forEach(doc => {
+            dnisExistentes.add(doc.data().dni);
+          });
+    
+          const nuevosRegistros = registros.filter(registro => !dnisExistentes.has(registro.dni));
+    
+          if (dnisExistentes.size > 0) {
+            const dniDuplicados = Array.from(dnisExistentes).join(", ");
+            const continuar = confirm(`Los siguientes DNI ya existen en la base de datos: ${dniDuplicados}. ¿Deseas continuar con los registros nuevos?`);
+            if (!continuar) return;
+          }
+    
+          nuevosRegistros.forEach(registro => {
+            db.collection("registros")
+              .add(registro)
+              .then(() => {
+                console.log("Registro agregado:", registro);
+              })
+              .catch(error => console.error("Error al agregar registro:", error));
+          });
+    
+          alert("Carga de datos finalizada.");
+        })
+        .catch(error => console.error("Error al verificar duplicados:", error));
     }
 
 
-  </script>
+</script>
 </body>
 </html>
