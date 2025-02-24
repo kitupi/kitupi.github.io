@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <h1>Dashboard - Sistema de Registros</h1>
+  <h1>Dashboard! - Sistema de Registros</h1>
   
   <!-- Tabla que se llenará con los datos de Firestore -->
   <table id="registrosTable">
@@ -98,7 +98,6 @@
       const docId = row.getAttribute("data-doc-id");
       const celdas = row.querySelectorAll("td");
       
-      // Se asume el orden: Nombre, Apellido, DNI, Legajo, Certificado
       const nuevosDatos = {
         nombre: celdas[0].innerText.trim(),
         apellido: celdas[1].innerText.trim(),
@@ -106,19 +105,20 @@
         legajo: celdas[3].innerText.trim(),
         certificado: celdas[4].innerText.trim()
       };
-
-      // Obtener el documento actual para comparar valores
+    
+      console.log("Datos nuevos a actualizar:", nuevosDatos);
+    
       const docRef = db.collection("registros").doc(docId);
       docRef.get().then(doc => {
         if (doc.exists) {
           const datosAntiguos = doc.data();
-          // Para cada campo, si hay diferencia, llamar a actualizarDato (definida en functions/actualizador.js)
+          // Para cada campo, si hay diferencia, llamar a actualizarDato
           for (const campo in nuevosDatos) {
             if (datosAntiguos[campo] !== nuevosDatos[campo]) {
               actualizarDato(docId, campo, datosAntiguos[campo], nuevosDatos[campo]);
             }
           }
-          // Actualizar el documento con los nuevos datos
+          // Actualizamos el documento con los nuevos datos
           docRef.update(nuevosDatos)
             .then(() => {
               alert("Cambios guardados y registrados.");
@@ -130,7 +130,8 @@
           console.error("El documento no existe.");
         }
       }).catch(error => console.error("Error al obtener el documento:", error));
-    }
+  }
+
 
     // Al cargar la página, verificamos que el usuario esté autenticado y cargamos los registros
     auth.onAuthStateChanged(user => {
