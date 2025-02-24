@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <h1>Dashboard - Sistema de Registros</h1>
+  <h1>Dashboardx - Sistema de Registros</h1>
 
   <!-- Botón para cargar datos CSV -->
 <div style="margin-bottom: 20px;">
@@ -156,75 +156,88 @@
     });
     
     document.getElementById("inputCSV").addEventListener("change", function(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      
-      const reader = new FileReader();
-      reader.onload = function(e) {
-          const contenido = e.target.result;
-          procesarCSV(contenido);
-      };
-      reader.onerror = function(e) {
-          console.error("Error al leer el archivo:", e);
-      };
-      reader.readAsText(file);
-  });
-  
-  function procesarCSV(csvText) {
-      const lineas = csvText.trim().split(/\r?\n/);
-      if (lineas.length < 2) {
-          alert("El archivo CSV no tiene datos.");
-          return;
-      }
-  
-      // Detectar el delimitador
-      const primerLinea = lineas[0];
-      const cantidadComas = (primerLinea.match(/,/g) || []).length;
-      const cantidadPuntoYComa = (primerLinea.match(/;/g) || []).length;
-      const delimitador = cantidadPuntoYComa > cantidadComas ? ";" : ",";
-  
-      // Obtener encabezados
-      const encabezados = primerLinea.split(delimitador).map(header => header.trim());
-  
-      // Procesar registros
-      for (let i = 1; i < lineas.length; i++) {
-          const campos = lineas[i].split(delimitador);
-          if (campos.length !== encabezados.length) {
-              console.warn(`La línea ${i+1} no coincide en cantidad de campos. Se ignora.`);
-              continue;
-          }
-  
-          let registro = {};
-          encabezados.forEach((header, index) => {
-              registro[header.toLowerCase()] = campos[index].trim(); // Convertir claves a minúsculas para uniformidad
-          });
-  
-          // Verificar si el DNI ya existe en la base de datos
-          db.collection("registros").where("dni", "==", registro.dni).get()
-              .then((querySnapshot) => {
-                  if (!querySnapshot.empty) {
-                      // Si el DNI existe, preguntar si se actualiza el registro
-                      if (confirm(`El registro con DNI ${registro.dni} ya existe. ¿Quieres actualizarlo?`)) {
-                          querySnapshot.forEach((doc) => {
-                              db.collection("registros").doc(doc.id).update(registro)
-                                  .then(() => console.log(`Registro con DNI ${registro.dni} actualizado.`))
-                                  .catch(error => console.error("Error al actualizar registro:", error));
-                          });
-                      } else {
-                          console.log(`Registro con DNI ${registro.dni} omitido.`);
-                      }
-                  } else {
-                      // Si el DNI no existe, agregar un nuevo registro
-                      db.collection("registros").add(registro)
-                          .then(() => console.log("Registro agregado:", registro))
-                          .catch(error => console.error("Error al agregar registro:", error));
-                  }
-              })
-              .catch(error => console.error("Error al verificar existencia del DNI:", error));
-      }
-  
-      alert("Proceso de carga finalizado.");
-  }
+        const file = event.target.files[0];
+        if (!file) return;
+    
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const contenido = e.target.result;
+            procesarCSV(contenido);
+        };
+        reader.onerror = function(e) {
+            console.error("Error al leer el archivo:", e);
+        };
+        reader.readAsText(file);
+    });
+    
+    function procesarCSV(csvText) {
+        const lineas = csvText.trim().split(/\r?\n/);
+        if (lineas.length < 2) {
+            alert("El archivo CSV no tiene datos.");
+            return;
+        }
+    
+        // Detectar el delimitador
+        const primerLinea = lineas[0];
+        const cantidadComas = (primerLinea.match(/,/g) || []).length;
+        const cantidadPuntoYComa = (primerLinea.match(/;/g) || []).length;
+        const delimitador = cantidadPuntoYComa > cantidadComas ? ";" : ",";
+    
+        // Obtener encabezados
+        const encabezados = primerLinea.split(delimitador).map(header => header.trim());
+    
+        // Lista de promesas para rastrear todas las operaciones
+        let operaciones = [];
+    
+        // Procesar registros
+        for (let i = 1; i < lineas.length; i++) {
+            const campos = lineas[i].split(delimitador);
+            if (campos.length !== encabezados.length) {
+                console.warn(`La línea ${i+1} no coincide en cantidad de campos. Se ignora.`);
+                continue;
+            }
+    
+            let registro = {};
+            encabezados.forEach((header, index) => {
+                registro[header.toLowerCase()] = campos[index].trim(); // Convertir claves a minúsculas
+            });
+    
+            // Agregar la promesa de verificación de existencia
+            let operacion = db.collection("registros").where("dni", "==", registro.dni).get()
+                .then((querySnapshot) => {
+                    if (!querySnapshot.empty) {
+                        return new Promise((resolve) => {
+                            if (confirm(`El registro con DNI ${registro.dni} ya existe. ¿Quieres actualizarlo?`)) {
+                                let actualizaciones = [];
+                                querySnapshot.forEach((doc) => {
+                                    let actualizacion = db.collection("registros").doc(doc.id).update(registro);
+                                    actualizaciones.push(actualizacion);
+                                });
+                                Promise.all(actualizaciones)
+                                    .then(() => console.log(`Registro con DNI ${registro.dni} actualizado.`))
+                                    .catch(error => console.error("Error al actualizar registro:", error))
+                                    .finally(resolve);
+                            } else {
+                                console.log(`Registro con DNI ${registro.dni} omitido.`);
+                                resolve();
+                            }
+                        });
+                    } else {
+                        return db.collection("registros").add(registro)
+                            .then(() => console.log("Registro agregado:", registro))
+                            .catch(error => console.error("Error al agregar registro:", error));
+                    }
+                })
+                .catch(error => console.error("Error al verificar existencia del DNI:", error));
+    
+            operaciones.push(operacion);
+        }
+    
+        // Esperar a que todas las operaciones terminen antes de mostrar el mensaje final
+        Promise.all(operaciones).then(() => {
+            alert("Proceso de carga finalizado.");
+        });
+    }
 
 
 </script>
