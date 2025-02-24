@@ -29,6 +29,12 @@
 </head>
 <body>
   <h1>Dashboard! - Sistema de Registros</h1>
+
+  <!-- Botón para cargar datos CSV -->
+<div style="margin-bottom: 20px;">
+  <button id="btnCargarDatos">Cargar datos CSV</button>
+  <input type="file" id="inputCSV" accept=".csv" style="display: none;">
+</div>
   
   <!-- Tabla que se llenará con los datos de Firestore -->
   <table id="registrosTable">
@@ -142,6 +148,57 @@
         window.location.href = "registracion.html";
       }
     });
+
+    //*************Carga por VCS **********************
+    document.getElementById("btnCargarDatos").addEventListener("click", () => {
+      document.getElementById("inputCSV").click();
+    });
+    
+    document.getElementById("inputCSV").addEventListener("change", function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const contenido = e.target.result;
+        procesarCSV(contenido);
+      };
+      reader.onerror = function(e) {
+        console.error("Error al leer el archivo:", e);
+      };
+      reader.readAsText(file);
+    });
+    
+    function procesarCSV(csvText) {
+      // Suponemos que la primera línea son los encabezados: nombre, apellido, dni, legajo, certificado
+      const lineas = csvText.trim().split("\n");
+      if (lineas.length < 2) {
+        alert("El archivo CSV no tiene datos.");
+        return;
+      }
+      
+      const encabezados = lineas[0].split(",");
+      
+      // Procesa cada línea (omitimos la primera)
+      for (let i = 1; i < lineas.length; i++) {
+        const campos = lineas[i].split(",");
+        // Crear un objeto con base en los encabezados
+        let registro = {};
+        encabezados.forEach((header, index) => {
+          registro[header.trim()] = campos[index].trim();
+        });
+        
+        // Insertar en Firestore. Usamos add() para que se genere un ID automáticamente.
+        db.collection("registros").add(registro)
+          .then(() => {
+            console.log("Registro agregado:", registro);
+          })
+          .catch(error => console.error("Error al agregar registro:", error));
+      }
+      
+      alert("Carga de datos finalizada.");
+    }
+
   </script>
 </body>
 </html>
