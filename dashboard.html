@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <h1>Dashboard! - Sistema de Registros</h1>
+  <h1>Dashboard - Sistema de Registros</h1>
 
   <!-- Botón para cargar datos CSV -->
 <div style="margin-bottom: 20px;">
@@ -170,25 +170,37 @@
     });
     
     function procesarCSV(csvText) {
-      // Suponemos que la primera línea son los encabezados: nombre, apellido, dni, legajo, certificado
-      const lineas = csvText.trim().split("\n");
+      // Limpiar y dividir por saltos de línea
+      const lineas = csvText.trim().split(/\r?\n/);
       if (lineas.length < 2) {
         alert("El archivo CSV no tiene datos.");
         return;
       }
       
-      const encabezados = lineas[0].split(",");
+      // Detectar el delimitador usando la primera línea (encabezados)
+      const primerLinea = lineas[0];
+      const cantidadComas = (primerLinea.match(/,/g) || []).length;
+      const cantidadPuntoYComa = (primerLinea.match(/;/g) || []).length;
+      // Si hay más punto y coma que comas, usaremos punto y coma; de lo contrario, coma.
+      const delimitador = cantidadPuntoYComa > cantidadComas ? ";" : ",";
       
-      // Procesa cada línea (omitimos la primera)
+      // Dividir la primera línea para obtener los encabezados
+      const encabezados = primerLinea.split(delimitador).map(header => header.trim());
+      
+      // Procesar cada línea (omitimos la primera)
       for (let i = 1; i < lineas.length; i++) {
-        const campos = lineas[i].split(",");
-        // Crear un objeto con base en los encabezados
+        const campos = lineas[i].split(delimitador);
+        if (campos.length !== encabezados.length) {
+          console.warn(`La línea ${i+1} no coincide en cantidad de campos. Se ignora.`);
+          continue;
+        }
+        
         let registro = {};
         encabezados.forEach((header, index) => {
-          registro[header.trim()] = campos[index].trim();
+          registro[header] = campos[index].trim();
         });
         
-        // Insertar en Firestore. Usamos add() para que se genere un ID automáticamente.
+        // Insertar en Firestore. Se usa add() para generar un ID automáticamente.
         db.collection("registros").add(registro)
           .then(() => {
             console.log("Registro agregado:", registro);
@@ -198,6 +210,7 @@
       
       alert("Carga de datos finalizada.");
     }
+
 
   </script>
 </body>
