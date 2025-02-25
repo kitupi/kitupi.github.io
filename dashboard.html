@@ -51,7 +51,8 @@
   </style>
 </head>
 <body>
-  <h1>Dashboard77 - Sistema de Registros</h1>
+  <div class="container mt-5">
+  <h1>Dashboard88 - Sistema de Registros</h1>
 
   <!-- Botón para cargar datos CSV -->
 <div style="margin-bottom: 20px;">
@@ -100,6 +101,8 @@
       <!-- Las filas se generarán dinámicamente -->
     </tbody>
   </table>
+
+  </div>
   
   <!-- Cargamos el archivo de funciones externas -->
   <script src="functions/actualizador.js"></script>
@@ -309,8 +312,9 @@ function mostrarFormulario() {
         }
 
         function cerrarFormulario() {
-            document.getElementById("modalFormulario").style.display = "none";
-            document.getElementById("modalFondo").style.display = "none";
+            //document.getElementById("modalFormulario").style.display = "none";
+            //document.getElementById("modalFondo").style.display = "none";
+            document.getElementById("modalAgregar").style.display = "none";
         }
 
         function agregarRegistro() {
