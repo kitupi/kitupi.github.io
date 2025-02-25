@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <h1>DashboardxX - Sistema de Registros</h1>
+  <h1>Dashboard - Sistema de Registros</h1>
 
   <!-- Botón para cargar datos CSV -->
 <div style="margin-bottom: 20px;">
@@ -105,7 +105,7 @@
               <td contenteditable="true">${registro.dni || ""}</td>
               <td contenteditable="true">${registro.legajo || ""}</td>
               <td contenteditable="true">${registro.certificado || ""}</td>
-              <td><button onclick="guardarCambios(this)">Guardar</button></td>
+              <td><button onclick="guardarCambios(this)">Guardar</button><button onclick="borrarRegistro(this)">Borrar</button></td>
             `;
             tbody.appendChild(row);
           });
