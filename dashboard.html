@@ -25,10 +25,31 @@
     td[contenteditable="true"] {
       background-color: #fffce6;
     }
+    #modalFormulario {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        box-shadow: 0px 0px 10px gray;
+        z-index: 1000;
+    }
+    #modalFondo {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }    
   </style>
 </head>
 <body>
-  <h1>Dashboard - Sistema de Registros</h1>
+  <h1>Dashboardaa - Sistema de Registros</h1>
 
   <!-- Botón para cargar datos CSV -->
 <div style="margin-bottom: 20px;">
@@ -38,17 +59,17 @@
 <button id="btnAgregar">Agregar</button>
 
 <!-- Formulario flotante para agregar un nuevo registro -->
-<div id="formularioAgregar" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>Agregar Nuevo Registro</h2>
-    <label>Nombre: <input type="text" id="nuevoNombre"></label>
-    <label>Apellido: <input type="text" id="nuevoApellido"></label>
-    <label>DNI: <input type="text" id="nuevoDni"></label>
-    <label>Legajo: <input type="text" id="nuevoLegajo"></label>
-    <label>Certificado: <input type="text" id="nuevoCertificado"></label>
-    <button id="confirmarAgregar">Confirmar</button>
-  </div>
+<button onclick="mostrarFormulario()">Agregar</button>
+<div id="modalFondo" onclick="cerrarFormulario()"></div>
+<div id="modalFormulario">
+    <h2>Nuevo Registro</h2>
+    <label>Nombre: <input type="text" id="nombre"></label><br>
+    <label>Apellido: <input type="text" id="apellido"></label><br>
+    <label>DNI: <input type="text" id="dni"></label><br>
+    <label>Legajo: <input type="text" id="legajo"></label><br>
+    <label>Certificado: <input type="text" id="certificado"></label><br>
+    <button onclick="agregarRegistro()">Guardar</button>
+    <button onclick="cerrarFormulario()">Cancelar</button>
 </div>
   
   <!-- Tabla que se llenará con los datos de Firestore -->
@@ -269,32 +290,31 @@ function borrarRegistro(boton) {
 }
 
 // Funcionalidad del formulario flotante
-const modal = document.getElementById("formularioAgregar");
-document.getElementById("btnAgregar").onclick = function() {
-  modal.style.display = "block";
-};
-document.querySelector(".close").onclick = function() {
-  modal.style.display = "none";
-};
+function mostrarFormulario() {
+            document.getElementById("modalFormulario").style.display = "block";
+            document.getElementById("modalFondo").style.display = "block";
+        }
 
-// Confirmar y agregar nuevo registro
-const confirmarAgregar = document.getElementById("confirmarAgregar");
-confirmarAgregar.onclick = function() {
-  const nuevoRegistro = {
-    nombre: document.getElementById("nuevoNombre").value,
-    apellido: document.getElementById("nuevoApellido").value,
-    dni: document.getElementById("nuevoDni").value,
-    legajo: document.getElementById("nuevoLegajo").value,
-    certificado: document.getElementById("nuevoCertificado").value,
-  };
-  db.collection("registros").add(nuevoRegistro)
-    .then(() => {
-      console.log("Registro agregado correctamente");
-      modal.style.display = "none";
-      cargarRegistros(); // Recargar la tabla
-    })
-    .catch(error => console.error("Error al agregar registro:", error));
-};
+        function cerrarFormulario() {
+            document.getElementById("modalFormulario").style.display = "none";
+            document.getElementById("modalFondo").style.display = "none";
+        }
+
+        function agregarRegistro() {
+            const nombre = document.getElementById("nombre").value;
+            const apellido = document.getElementById("apellido").value;
+            const dni = document.getElementById("dni").value;
+            const legajo = document.getElementById("legajo").value;
+            const certificado = document.getElementById("certificado").value;
+            
+            db.collection("registros").add({
+                nombre, apellido, dni, legajo, certificado
+            }).then(() => {
+                alert("Registro agregado con éxito");
+                cerrarFormulario();
+                cargarRegistros();
+            }).catch(error => console.error("Error al agregar registro:", error));
+        }
 
 </script>
 </body>
