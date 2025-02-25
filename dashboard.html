@@ -8,331 +8,99 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  
+  <!-- Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <style>
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    td[contenteditable="true"] {
-      background-color: #fffce6;
-    }
-    #modalFormulario {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 20px;
-        box-shadow: 0px 0px 10px gray;
-        z-index: 1000;
-    }
-    #modalFondo {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-    }    
-  </style>
 </head>
 <body>
   <div class="container mt-5">
-  <h1>Dashboard88 - Sistema de Registros</h1>
+    <h1>Dashboard jeje - Sistema de Registros</h1>
 
-  <!-- Botón para cargar datos CSV -->
-<div style="margin-bottom: 20px;">
-  <button id="btnCargarDatos">Cargar datos CSV</button>
-  <input type="file" id="inputCSV" accept=".csv" style="display: none;">
-</div>
-
-<!-- Formulario flotante para agregar un nuevo registro -->
-<button onclick="mostrarFormulario()">Agregar</button>
-<div id="modalFondo" onclick="cerrarFormulario()"></div>
-    <div id="modalAgregar" class="modal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Agregar Registro</h5>
-                    <button type="button" class="btn-close" onclick="cerrarModal()"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" id="nombre" placeholder="Nombre" class="form-control mb-2">
-                    <input type="text" id="apellido" placeholder="Apellido" class="form-control mb-2">
-                    <input type="text" id="dni" placeholder="DNI" class="form-control mb-2">
-                    <input type="text" id="legajo" placeholder="Legajo" class="form-control mb-2">
-                    <input type="text" id="certificado" placeholder="Certificado" class="form-control mb-2">
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
-                    <button class="btn btn-primary" onclick="agregarRegistro()">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <button id="btnCargarDatos" class="btn btn-primary">Cargar datos CSV</button>
+    <input type="file" id="inputCSV" accept=".csv" style="display: none;">
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregar">Agregar</button>
   
-  <!-- Tabla que se llenará con los datos de Firestore -->
-  <table id="registrosTable">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>DNI</th>
-        <th>Número de Legajo</th>
-        <th>Certificado de Curso</th>
-        <th>Acción</th>
-      </tr>
-    </thead>
-    <tbody id="registrosBody">
-      <!-- Las filas se generarán dinámicamente -->
-    </tbody>
-  </table>
-
+    <table class="table table-bordered mt-3">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>DNI</th>
+          <th>Legajo</th>
+          <th>Certificado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody id="registrosBody"></tbody>
+    </table>
   </div>
   
-  <!-- Cargamos el archivo de funciones externas -->
-  <script src="functions/actualizador.js"></script>
-  
-  <!-- Script principal -->
+  <!-- Modal de Agregar Registro -->
+  <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAgregarLabel">Agregar Registro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="nombre" placeholder="Nombre" class="form-control mb-2">
+          <input type="text" id="apellido" placeholder="Apellido" class="form-control mb-2">
+          <input type="text" id="dni" placeholder="DNI" class="form-control mb-2">
+          <input type="text" id="legajo" placeholder="Legajo" class="form-control mb-2">
+          <input type="text" id="certificado" placeholder="Certificado" class="form-control mb-2">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-primary" onclick="agregarRegistro()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Configuración de Firebase (reemplaza appId con el valor correcto)
-    const firebaseConfig = {
-      apiKey: "AIzaSyCxgbhSCWzelZzAqr137fvFIQGb9n1ddUw",
-      authDomain: "registro-seguro-b53b2.firebaseapp.com",
-      projectId: "registro-seguro-b53b2",
-      storageBucket: "registro-seguro-b53b2.appspot.com",
-      messagingSenderId: "631744075010",
-      appId: "631744075010" // Reemplaza con tu appId real
-    };
-
-    // Inicializar Firebase
+    const firebaseConfig = { /* Tu configuración de Firebase */ };
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
     const db = firebase.firestore();
-
-    // Función para cargar los registros desde Firestore y mostrarlos en la tabla
+    
     function cargarRegistros() {
-      db.collection("registros").get()
-        .then((querySnapshot) => {
-          const tbody = document.getElementById("registrosBody");
-          tbody.innerHTML = ""; // Limpiar contenido previo
-          querySnapshot.forEach((doc) => {
-            const registro = doc.data();
-            // Creamos una fila con el atributo data-doc-id usando el id real del documento
-            const row = document.createElement("tr");
-            row.setAttribute("data-doc-id", doc.id);
-            row.innerHTML = `
-              <td contenteditable="true">${registro.nombre || ""}</td>
-              <td contenteditable="true">${registro.apellido || ""}</td>
-              <td contenteditable="true">${registro.dni || ""}</td>
-              <td contenteditable="true">${registro.legajo || ""}</td>
-              <td contenteditable="true">${registro.certificado || ""}</td>
-              <td><button onclick="guardarCambios(this)">Guardar</button><button onclick="borrarRegistro(this)">Borrar</button></td>
-            `;
-            tbody.appendChild(row);
-          });
-        })
-        .catch(error => console.error("Error al cargar registros:", error));
-    }
-
-
-    // Función para guardar cambios de una fila y registrar modificaciones
-    function guardarCambios(btn) {
-      const row = btn.parentElement.parentElement;
-      const docId = row.getAttribute("data-doc-id");
-      const celdas = row.querySelectorAll("td");
-      
-      const nuevosDatos = {
-        nombre: celdas[0].innerText.trim(),
-        apellido: celdas[1].innerText.trim(),
-        dni: celdas[2].innerText.trim(),
-        legajo: celdas[3].innerText.trim(),
-        certificado: celdas[4].innerText.trim()
-      };
-    
-      console.log("Datos nuevos a actualizar:", nuevosDatos);
-    
-      const docRef = db.collection("registros").doc(docId);
-      docRef.get().then(doc => {
-        if (doc.exists) {
-          const datosAntiguos = doc.data();
-          // Para cada campo, si hay diferencia, llamar a actualizarDato
-          for (const campo in nuevosDatos) {
-            if (datosAntiguos[campo] !== nuevosDatos[campo]) {
-              actualizarDato(docId, campo, datosAntiguos[campo], nuevosDatos[campo]);
-            }
-          }
-          // Actualizamos el documento con los nuevos datos
-          docRef.update(nuevosDatos)
-            .then(() => {
-              alert("Cambios guardados y registrados.");
-            })
-            .catch(error => {
-              console.error("Error al actualizar el documento:", error);
-            });
-        } else {
-          console.error("El documento no existe.");
-        }
-      }).catch(error => console.error("Error al obtener el documento:", error));
-    }
-
-
-    // Al cargar la página, verificamos que el usuario esté autenticado y cargamos los registros
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        cargarRegistros(); // carga la tabla
-      } else {
-        // Redirige al login si no hay usuario autenticado
-        window.location.href = "registracion.html";
-      }
-    });
-
-    //*************Carga por VCS **********************
-    document.getElementById("btnCargarDatos").addEventListener("click", () => {
-      document.getElementById("inputCSV").click();
-    });
-    
-    document.getElementById("inputCSV").addEventListener("change", function(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-    
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const contenido = e.target.result;
-            procesarCSV(contenido);
-        };
-        reader.onerror = function(e) {
-            console.error("Error al leer el archivo:", e);
-        };
-        reader.readAsText(file);
-    });
-    
-    function procesarCSV(csvText) {
-        const lineas = csvText.trim().split(/\r?\n/);
-        if (lineas.length < 2) {
-            alert("El archivo CSV no tiene datos.");
-            return;
-        }
-    
-        // Detectar el delimitador
-        const primerLinea = lineas[0];
-        const cantidadComas = (primerLinea.match(/,/g) || []).length;
-        const cantidadPuntoYComa = (primerLinea.match(/;/g) || []).length;
-        const delimitador = cantidadPuntoYComa > cantidadComas ? ";" : ",";
-    
-        // Obtener encabezados
-        const encabezados = primerLinea.split(delimitador).map(header => header.trim());
-    
-        // Lista de promesas para rastrear todas las operaciones
-        let operaciones = [];
-    
-        // Procesar registros
-        for (let i = 1; i < lineas.length; i++) {
-            const campos = lineas[i].split(delimitador);
-            if (campos.length !== encabezados.length) {
-                console.warn(`La línea ${i+1} no coincide en cantidad de campos. Se ignora.`);
-                continue;
-            }
-    
-            let registro = {};
-            encabezados.forEach((header, index) => {
-                registro[header.toLowerCase()] = campos[index].trim(); // Convertir claves a minúsculas
-            });
-    
-            // Agregar la promesa de verificación de existencia
-            let operacion = db.collection("registros").where("dni", "==", registro.dni).get()
-                .then((querySnapshot) => {
-                    if (!querySnapshot.empty) {
-                        return new Promise((resolve) => {
-                            if (confirm(`El registro con DNI ${registro.dni} ya existe. ¿Quieres actualizarlo?`)) {
-                                let actualizaciones = [];
-                                querySnapshot.forEach((doc) => {
-                                    let actualizacion = db.collection("registros").doc(doc.id).update(registro);
-                                    actualizaciones.push(actualizacion);
-                                });
-                                Promise.all(actualizaciones)
-                                    .then(() => console.log(`Registro con DNI ${registro.dni} actualizado.`))
-                                    .catch(error => console.error("Error al actualizar registro:", error))
-                                    .finally(resolve);
-                            } else {
-                                console.log(`Registro con DNI ${registro.dni} omitido.`);
-                                resolve();
-                            }
-                        });
-                    } else {
-                        return db.collection("registros").add(registro)
-                            .then(() => console.log("Registro agregado:", registro))
-                            .catch(error => console.error("Error al agregar registro:", error));
-                    }
-                })
-                .catch(error => console.error("Error al verificar existencia del DNI:", error));
-    
-            operaciones.push(operacion);
-        }
-    
-        // Esperar a que todas las operaciones terminen antes de mostrar el mensaje final
-        Promise.all(operaciones).then(() => {
-            alert("Proceso de carga finalizado.");
+      db.collection("registros").get().then((querySnapshot) => {
+        const tbody = document.getElementById("registrosBody");
+        tbody.innerHTML = "";
+        querySnapshot.forEach((doc) => {
+          const registro = doc.data();
+          const row = `<tr data-doc-id="${doc.id}">
+            <td contenteditable="true">${registro.nombre || ""}</td>
+            <td contenteditable="true">${registro.apellido || ""}</td>
+            <td contenteditable="true">${registro.dni || ""}</td>
+            <td contenteditable="true">${registro.legajo || ""}</td>
+            <td contenteditable="true">${registro.certificado || ""}</td>
+            <td>
+              <button class="btn btn-warning btn-sm" onclick="guardarCambios(this)">Guardar</button>
+              <button class="btn btn-danger btn-sm" onclick="borrarRegistro(this)">Borrar</button>
+            </td>
+          </tr>`;
+          tbody.innerHTML += row;
         });
+      });
     }
-//**************BORRAR Y AGREGAR REGISTRO************************
-    // Función para eliminar un registro
-function borrarRegistro(boton) {
-  const fila = boton.parentElement.parentElement;
-  const docId = fila.getAttribute("data-doc-id");
-  if (confirm("¿Seguro que deseas eliminar este registro?")) {
-    db.collection("registros").doc(docId).delete()
-      .then(() => {
-        fila.remove();
-        console.log("Registro eliminado correctamente");
-      })
-      .catch(error => console.error("Error al eliminar registro:", error));
-  }
-}
 
-// Funcionalidad del formulario flotante
-function mostrarFormulario() {
-            //document.getElementById("modalFormulario").style.display = "block";
-            //document.getElementById("modalFondo").style.display = "block";
-            document.getElementById("modalAgregar").style.display = "block";
-        }
-
-        function cerrarFormulario() {
-            //document.getElementById("modalFormulario").style.display = "none";
-            //document.getElementById("modalFondo").style.display = "none";
-            document.getElementById("modalAgregar").style.display = "none";
-        }
-
-        function agregarRegistro() {
-            const nombre = document.getElementById("nombre").value;
-            const apellido = document.getElementById("apellido").value;
-            const dni = document.getElementById("dni").value;
-            const legajo = document.getElementById("legajo").value;
-            const certificado = document.getElementById("certificado").value;
-            
-            db.collection("registros").add({
-                nombre, apellido, dni, legajo, certificado
-            }).then(() => {
-                alert("Registro agregado con éxito");
-                cerrarFormulario();
-                cargarRegistros();
-            }).catch(error => console.error("Error al agregar registro:", error));
-        }
-
-</script>
+    function agregarRegistro() {
+      const nombre = document.getElementById("nombre").value;
+      const apellido = document.getElementById("apellido").value;
+      const dni = document.getElementById("dni").value;
+      const legajo = document.getElementById("legajo").value;
+      const certificado = document.getElementById("certificado").value;
+      
+      db.collection("registros").add({ nombre, apellido, dni, legajo, certificado })
+        .then(() => {
+          alert("Registro agregado con éxito");
+          cargarRegistros();
+          document.getElementById("modalAgregar").querySelector(".btn-close").click();
+        })
+        .catch(error => console.error("Error al agregar registro:", error));
+    }
+  </script>
 </body>
 </html>
