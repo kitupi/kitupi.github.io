@@ -15,7 +15,7 @@
 </head>
 <body>
   <div class="container mt-5">
-    <h1>Dashboard jeje - Sistema de Registros</h1>
+    <h1>Dashboard jua - Sistema de Registros</h1>
 
     <button id="btnCargarDatos" class="btn btn-primary">Cargar datos CSV</button>
     <input type="file" id="inputCSV" accept=".csv" style="display: none;">
@@ -60,6 +60,16 @@
   </div>
 
   <script>
+      // Configuración de Firebase (reemplaza appId con el valor correcto)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCxgbhSCWzelZzAqr137fvFIQGb9n1ddUw",
+      authDomain: "registro-seguro-b53b2.firebaseapp.com",
+      projectId: "registro-seguro-b53b2",
+      storageBucket: "registro-seguro-b53b2.appspot.com",
+      messagingSenderId: "631744075010",
+      appId: "631744075010" // Reemplaza con tu appId real
+    };
+    
     const firebaseConfig = { /* Tu configuración de Firebase */ };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
