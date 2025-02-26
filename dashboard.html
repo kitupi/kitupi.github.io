@@ -313,34 +313,51 @@ function mostrarFormulario() {
             document.getElementById("modalFondo").style.display = "none";
         }
 
-        function agregarRegistro() {
-            const nombre = document.getElementById("nombre").value;
-            const apellido = document.getElementById("apellido").value;
-            const dni = document.getElementById("dni").value;
-            const legajo = document.getElementById("legajo").value;
-            const certificado = document.getElementById("certificado").value;
-            const usuario = firebase.auth().currentUser;
-            
-            if (usuario) {
-                db.collection("registros").add({ nombre, apellido, dni, legajo, certificado })
-                    .then((docRef) => {
-                        console.log("Registro agregado: ", docRef.id);
-                        return db.collection("historial_cambios").add({
-                            registro_id: docRef.id,
-                            accion: "creación",
-                            fecha: new Date().toISOString(),
-                            realizado_por: usuario.email,
-                            datos: { nombre, apellido, dni, legajo, certificado }
-                        });
-                    })
-                    .then(() => {
-                        alert("Registro agregado con éxito");
-                        cerrarFormulario();
-                        cargarRegistros();
-                    })
-                    .catch(error => console.error("Error al agregar registro:", error));
-            }
-        }
+function agregarRegistro() {
+    const nombre = document.getElementById("nombre").value;
+    const apellido = document.getElementById("apellido").value;
+    const dni = document.getElementById("dni").value;
+    const legajo = document.getElementById("legajo").value;
+    const certificado = document.getElementById("certificado").value;
+    const usuario = firebase.auth().currentUser;
+
+    if (usuario) {
+        db.collection("registros").add({ nombre, apellido, dni, legajo, certificado })
+            .then((docRef) => {
+                console.log("Registro agregado: ", docRef.id);
+
+                const nuevoHistorial = {
+                    registro_id: docRef.id,
+                    accion: "creación",
+                    fecha: new Date().toISOString(),
+                    realizado_por: usuario.email,
+                    datos: { nombre, apellido, dni, legajo, certificado }
+                };
+
+                const nuevoHistorialCreacion = {
+                    registro_id: docRef.id,
+                    apellido,
+                    nombre,
+                    dni,
+                    legajo,
+                    fecha: new Date().toISOString(),
+                    realizado_por: usuario.email
+                };
+
+                return Promise.all([
+                    db.collection("historial_cambios").add(nuevoHistorial),
+                    db.collection("historial_creacion").add(nuevoHistorialCreacion)
+                ]);
+            })
+            .then(() => {
+                alert("Registro agregado con éxito");
+                cerrarFormulario();
+                cargarRegistros();
+            })
+            .catch(error => console.error("Error al agregar registro:", error));
+    }
+}
+
 
 </script>
 </body>
