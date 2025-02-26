@@ -141,6 +141,7 @@
     }
     
     auth.onAuthStateChanged(user => {
+      console.log("Estado de autenticación:", user);
       if (user) {
         cargarAgentes();
       } else {
