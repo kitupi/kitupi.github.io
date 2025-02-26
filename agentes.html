@@ -140,14 +140,18 @@
         }).catch(error => console.error("Error al cargar actividad:", error));
     }
     
-    auth.onAuthStateChanged(user => {
-      console.log("Estado de autenticación:", user);
-      if (user) {
-        cargarAgentes();
-      } else {
-        window.location.href = "registracion.html?redirect=agentes.html";
-      }
-    });
+    setTimeout(() => {
+  console.log("Ejecutando onAuthStateChanged...");
+  auth.onAuthStateChanged(user => {
+    console.log("Estado de autenticación:", user);
+    if (user) {
+      cargarAgentes();
+    } else {
+      window.location.href = "registracion.html?redirect=agentes.html";
+    }
+  });
+}, 2000); // Espera 2 segundos
+
   </script>
 </body>
 </html>
