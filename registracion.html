@@ -51,7 +51,10 @@
           db.collection("usuarios_permitidos").doc(user.email).get()
               .then(doc => {
                   if (doc.exists) {
-                      window.location.href = "dashboard.html"; // Acceso permitido
+                    //window.location.href = "dashboard.html"; // Acceso permitido
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const redirectTo = urlParams.get("redirect") || "dashboard.html";
+                    window.location.href = redirectTo;
                   } else {
                       auth.signOut(); // Cerrar sesión si no está permitido
                       document.getElementById('mensaje').innerText = "Acceso denegado. Contacta al administrador.";
