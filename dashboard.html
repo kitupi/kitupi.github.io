@@ -49,7 +49,7 @@
   </style>
 </head>
 <body>
-  <h1>Dashboard Kiss - Sistema de Registros</h1>
+  <h1>Dashboard KissYeah - Sistema de Registros</h1>
 
   <!-- Botón para cargar datos CSV -->
 <div style="margin-bottom: 20px;">
@@ -279,6 +279,7 @@ function borrarRegistro(boton) {
   const fila = boton.parentElement.parentElement;
   const docId = fila.getAttribute("data-doc-id");
   const usuario = firebase.auth().currentUser;
+  const dni = document.getElementById("dni").value;
   if (usuario && confirm("¿Seguro que deseas eliminar este registro?")) {
       db.collection("registros").doc(docId).delete()
           .then(() => {
@@ -286,6 +287,9 @@ function borrarRegistro(boton) {
               return db.collection("historial_cambios").add({
                   registro_id: docId,
                   accion: "eliminación",
+                  campo_modificado: "dni",
+                  dato_anterior: dni,
+                  dato_nuevo: "---",
                   fecha: new Date().toISOString(),
                   realizado_por: usuario.email
               });
