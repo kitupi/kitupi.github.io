@@ -19,7 +19,7 @@
 </head>
 <body>
   <h1>Agentes</h1>
-  <h2>Registro de Edición de los aYentes</h2>
+  <h2>Registro de Edición de los Fafentes</h2>
   
   <table id="agentesTable">
     <thead>
@@ -140,7 +140,17 @@
         }).catch(error => console.error("Error al cargar actividad:", error));
     }
     
-    
+    setTimeout(() => {
+  console.log("Ejecutando onAuthStateChanged...");
+  auth.onAuthStateChanged(user => {
+    console.log("Estado de autenticación:", user);
+    if (user) {
+      cargarAgentes();
+    } else {
+      window.location.href = "registracion.html?redirect=agentes.html";
+    }
+  });
+}, 5000); // Espera 5 segundos
 
   </script>
 </body>
