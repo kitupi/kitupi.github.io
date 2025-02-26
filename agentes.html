@@ -4,46 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agentes - Registro de Edición</title>
-  <!-- Carga de Firebase en versión compat -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    h1, h2 {
-      color: #333;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    button {
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-    #actividadContainer {
-      display: none;
-      margin-top: 20px;
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1, h2, h3 { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    button { padding: 5px 10px; cursor: pointer; }
+    #actividadContainer { display: none; margin-top: 20px; }
   </style>
 </head>
 <body>
   <h1>Agentes</h1>
   <h2>Registro de Edición de los agentes</h2>
   
-  <!-- Tabla de Agentes -->
   <table id="agentesTable">
     <thead>
       <tr>
@@ -52,18 +29,16 @@
         <th>Acción</th>
       </tr>
     </thead>
-    <tbody id="agentesBody">
-      <!-- Se llenará dinámicamente -->
-    </tbody>
+    <tbody id="agentesBody"></tbody>
   </table>
   
-  <!-- Contenedor para mostrar la actividad de un agente -->
   <div id="actividadContainer">
-    <h3 id="actividadTitulo"></h3>
-    <table id="actividadTable">
+    <h3 id="agenteId"></h3>
+    
+    <h3>Modificaciones</h3>
+    <table id="modificacionesTable">
       <thead>
         <tr>
-          <th>Acción</th>
           <th>Campo Modificado</th>
           <th>Dato Anterior</th>
           <th>Dato Nuevo</th>
@@ -71,99 +46,104 @@
           <th>ID Registro</th>
         </tr>
       </thead>
-      <tbody id="actividadBody">
-        <!-- Se llenará dinámicamente -->
-      </tbody>
+      <tbody id="modificacionesBody"></tbody>
+    </table>
+    
+    <h3>Creación</h3>
+    <table id="creacionTable">
+      <thead>
+        <tr>
+          <th>Apellido</th>
+          <th>Nombre</th>
+          <th>DNI</th>
+          <th>Legajo</th>
+          <th>Fecha de Creación</th>
+        </tr>
+      </thead>
+      <tbody id="creacionBody"></tbody>
+    </table>
+    
+    <h3>Eliminación</h3>
+    <table id="eliminacionTable">
+      <thead>
+        <tr>
+          <th>Apellido</th>
+          <th>Nombre</th>
+          <th>DNI</th>
+          <th>Legajo</th>
+          <th>Fecha de Eliminación</th>
+        </tr>
+      </thead>
+      <tbody id="eliminacionBody"></tbody>
     </table>
   </div>
   
   <script>
-    // Configuración de Firebase (reemplaza appId con el valor correcto)
     const firebaseConfig = {
-      apiKey: "AIzaSyCxgbhSCWzelZzAqr137fvFIQGb9n1ddUw",
+      apiKey: "AIzaSyCxgbhSCW...",
       authDomain: "registro-seguro-b53b2.firebaseapp.com",
       projectId: "registro-seguro-b53b2",
       storageBucket: "registro-seguro-b53b2.appspot.com",
       messagingSenderId: "631744075010",
-      appId: "631744075010" // Reemplaza con tu appId real
+      appId: "631744075010"
     };
-
-    // Inicializar Firebase
+    
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-
-    // Función para formatear la fecha de ISO a d/m/y h:m:s
+    
     function formatearFecha(isoString) {
       const date = new Date(isoString);
-      const dia = String(date.getDate()).padStart(2, '0');
-      const mes = String(date.getMonth() + 1).padStart(2, '0');
-      const anio = date.getFullYear();
-      const horas = String(date.getHours()).padStart(2, '0');
-      const minutos = String(date.getMinutes()).padStart(2, '0');
-      const segundos = String(date.getSeconds()).padStart(2, '0');
-      return `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
+      return `${date.getDate().toString().padStart(2, '0')}/` +
+             `${(date.getMonth() + 1).toString().padStart(2, '0')}/` +
+             `${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     }
-
-    // Cargar agentes de la colección usuarios_permitidos
+    
     function cargarAgentes() {
-      db.collection("usuarios_permitidos").get()
-        .then((querySnapshot) => {
-          const tbody = document.getElementById("agentesBody");
-          tbody.innerHTML = "";
-          querySnapshot.forEach((doc) => {
-            const agente = doc.data();
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-              <td>${doc.id}</td>
-              <td>${agente.rol || ""}</td>
-              <td><button onclick="verActividad('${doc.id}')">Ver actividad</button></td>
-            `;
-            tbody.appendChild(tr);
-          });
-        })
-        .catch(error => console.error("Error al cargar agentes:", error));
+      db.collection("usuarios_permitidos").get().then(querySnapshot => {
+        const tbody = document.getElementById("agentesBody");
+        tbody.innerHTML = "";
+        querySnapshot.forEach(doc => {
+          const agente = doc.data();
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${doc.id}</td>
+            <td>${agente.rol || ""}</td>
+            <td><button onclick="verActividad('${doc.id}')">Ver actividad</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }).catch(error => console.error("Error al cargar agentes:", error));
     }
-
-    // Función para mostrar la actividad de un agente (historial_cambios)
+    
     function verActividad(email) {
-      // Actualiza el título con el email del agente
-      document.getElementById("actividadTitulo").innerText = `Actividad de ${email}`;
-      // Mostrar el contenedor de actividad
+      document.getElementById("agenteId").innerText = `ID Agente: ${email}`;
       document.getElementById("actividadContainer").style.display = "block";
-      // Limpiar la tabla de actividad
-      const actividadBody = document.getElementById("actividadBody");
-      actividadBody.innerHTML = "";
+      document.getElementById("modificacionesBody").innerHTML = "";
+      document.getElementById("creacionBody").innerHTML = "";
+      document.getElementById("eliminacionBody").innerHTML = "";
       
-      // Consultar historial_cambios filtrando por realizado_por == email
-      db.collection("historial_cambios")
-        .where("realizado_por", "==", email)
-        .orderBy("fecha", "desc")
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
+      db.collection("historial_cambios").where("realizado_por", "==", email)
+        .orderBy("fecha", "desc").get().then(querySnapshot => {
+          querySnapshot.forEach(doc => {
             const cambio = doc.data();
             const tr = document.createElement("tr");
             tr.innerHTML = `
-              <td>${cambio.accion}</td>
               <td>${cambio.campo_modificado}</td>
               <td>${cambio.dato_anterior}</td>
               <td>${cambio.dato_nuevo}</td>
               <td>${formatearFecha(cambio.fecha)}</td>
               <td>${cambio.registro_id}</td>
             `;
-            actividadBody.appendChild(tr);
+            document.getElementById("modificacionesBody").appendChild(tr);
           });
-        })
-        .catch(error => console.error("Error al cargar actividad:", error));
+        }).catch(error => console.error("Error al cargar actividad:", error));
     }
-
-    // Verificar autenticación (para que solo agentes autenticados accedan)
+    
     auth.onAuthStateChanged(user => {
       if (user) {
         cargarAgentes();
       } else {
-        // Si no hay usuario autenticado, redirige a login u otra página de acceso
         window.location.href = "registracion.html";
       }
     });
