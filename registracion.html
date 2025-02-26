@@ -46,6 +46,7 @@
     auth.signInWithEmailAndPassword(email, password)
       .then(userCredential => {
           const user = userCredential.user;
+          console.log("Usuario autenticado:", user.email);//veamos si me loguee bien
           
           // Verificar si el usuario está en la lista de permitidos
           db.collection("usuarios_permitidos").doc(user.email).get()
@@ -54,6 +55,7 @@
                     //window.location.href = "dashboard.html"; // Acceso permitido
                     const urlParams = new URLSearchParams(window.location.search);
                     const redirectTo = urlParams.get("redirect") || "dashboard.html";
+                      console.log("Redirigiendo a:", redirectTo); // veamos a donde me redirige
                     window.location.href = redirectTo;
                   } else {
                       auth.signOut(); // Cerrar sesión si no está permitido
