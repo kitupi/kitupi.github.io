@@ -19,7 +19,7 @@
 </head>
 <body>
   <h1>Agentes</h1>
-  <h2>Registro de Edición de los Fafentes</h2>
+  <h2>Registro de Edición de los Gafentes</h2>
   
   <table id="agentesTable">
     <thead>
@@ -86,7 +86,7 @@
       storageBucket: "registro-seguro-b53b2.appspot.com",
       messagingSenderId: "631744075010",
       appId: "631744075010"
-    };
+  };
     
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
@@ -99,21 +99,24 @@
              `${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     }
     
+    // Cargar agentes de la colección usuarios_permitidos
     function cargarAgentes() {
-      db.collection("usuarios_permitidos").get().then(querySnapshot => {
-        const tbody = document.getElementById("agentesBody");
-        tbody.innerHTML = "";
-        querySnapshot.forEach(doc => {
-          const agente = doc.data();
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${doc.id}</td>
-            <td>${agente.rol || ""}</td>
-            <td><button onclick="verActividad('${doc.id}')">Ver actividad</button></td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }).catch(error => console.error("Error al cargar agentes:", error));
+      db.collection("usuarios_permitidos").get()
+        .then((querySnapshot) => {
+          const tbody = document.getElementById("agentesBody");
+          tbody.innerHTML = "";
+          querySnapshot.forEach((doc) => {
+            const agente = doc.data();
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>${doc.id}</td>
+              <td>${agente.rol || ""}</td>
+              <td><button onclick="verActividad('${doc.id}')">Ver actividad</button></td>
+            `;
+            tbody.appendChild(tr);
+          });
+        })
+        .catch(error => console.error("Error al cargar agentes:", error));
     }
     
     function verActividad(email) {
