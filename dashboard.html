@@ -365,7 +365,7 @@ function actualizarRegistro() {
             apellido,
             dni,
             legajo,
-            fecha: firebase.firestore.FieldValue.serverTimestamp(),
+            fecha: new Date().toISOString(),
             realizado_por: usuario.email
         })
         .then((docRef) => {
