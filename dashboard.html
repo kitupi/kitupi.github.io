@@ -49,7 +49,7 @@
   </style>
 </head>
 <body>
-  <h1>Dashboard KissYeah - Sistema de Registros</h1>
+  <h1>Dashboard Simple Minds - Sistema de Registros</h1>
 
   <!-- Botón para cargar datos CSV -->
 <div style="margin-bottom: 20px;">
@@ -345,8 +345,8 @@ function agregarRegistro() {
                 };
 
                 return Promise.all([
-                    db.collection("historial_cambios").add(nuevoHistorial),
-                    db.collection("historial_creacion").add(nuevoHistorialCreacion)
+                    db.collection("historial_creacion").add(nuevoHistorial),
+                    //db.collection("historial_creacion").add(nuevoHistorialCreacion)
                 ]);
             })
             .then(() => {
