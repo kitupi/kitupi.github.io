@@ -49,7 +49,7 @@
   </style>
 </head>
 <body>
-  <h1>Dashboard Simple Minds - Sistema de Registros</h1>
+  <h1>Dashboard Simple Red - Sistema de Registros</h1>
 
   <!-- Botón para cargar datos CSV -->
 <div style="margin-bottom: 20px;">
@@ -67,7 +67,7 @@
     <label>DNI: <input type="text" id="dni"></label><br>
     <label>Legajo: <input type="text" id="legajo"></label><br>
     <label>Certificado: <input type="text" id="certificado"></label><br>
-    <button onclick="agregarRegistro()">Guardar</button>
+    <button onclick="actualizarRegistro()">Guardar</button>
     <button onclick="cerrarFormulario()">Cancelar</button>
 </div>
   
@@ -313,7 +313,7 @@ function mostrarFormulario() {
             document.getElementById("modalFondo").style.display = "none";
         }
 
-function agregarRegistro() {
+function actualizarRegistro() {
     const nombre = document.getElementById("nombre").value;
     const apellido = document.getElementById("apellido").value;
     const dni = document.getElementById("dni").value;
@@ -325,7 +325,6 @@ function agregarRegistro() {
         db.collection("registros").add({ nombre, apellido, dni, legajo, certificado })
             .then((docRef) => {
                 console.log("Registro agregado: ", docRef.id);
-
                 const nuevoHistorial = {
                     registro_id: docRef.id,
                     accion: "creación",
@@ -333,20 +332,8 @@ function agregarRegistro() {
                     realizado_por: usuario.email,
                     datos: { nombre, apellido, dni, legajo, certificado }
                 };
-
-                const nuevoHistorialCreacion = {
-                    registro_id: docRef.id,
-                    apellido,
-                    nombre,
-                    dni,
-                    legajo,
-                    fecha: new Date().toISOString(),
-                    realizado_por: usuario.email
-                };
-
                 return Promise.all([
-                    db.collection("historial_creacion").add(nuevoHistorial),
-                    //db.collection("historial_creacion").add(nuevoHistorialCreacion)
+                    db.collection("historial_cambios").add(nuevoHistorial)
                 ]);
             })
             .then(() => {
@@ -357,6 +344,39 @@ function agregarRegistro() {
             .catch(error => console.error("Error al agregar registro:", error));
     }
 }
+      function crearRegistro() {
+        const nombre = document.getElementById("nombre").value;
+        const apellido = document.getElementById("apellido").value;
+        const dni = document.getElementById("dni").value;
+        const legajo = document.getElementById("legajo").value;
+        const usuario = firebase.auth().currentUser;
+        
+        if (!usuario) {
+            console.error("No hay un usuario autenticado.");
+            alert("Debes iniciar sesión para crear un registro.");
+            return;
+        }
+        
+        // Crear el documento en la colección "historial_creacion"
+        db.collection("historial_creacion").add({
+            nombre,
+            apellido,
+            dni,
+            legajo,
+            fecha: firebase.firestore.FieldValue.serverTimestamp(),
+            realizado_por: usuario.email
+        })
+        .then((docRef) => {
+            console.log("Registro creado en historial_creacion con ID:", docRef.id);
+            alert("Registro agregado correctamente.");
+            cerrarFormulario();
+            cargarRegistros();
+        })
+        .catch(error => console.error("Error al crear registro:", error));
+    }
+
+
+    
 
 
 </script>
