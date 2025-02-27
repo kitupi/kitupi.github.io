@@ -49,7 +49,7 @@
   </style>
 </head>
 <body>
-  <h1>Dashboard Simple Ted - Sistema de Registros</h1>
+  <h1>Dashboard Simple Fuck - Sistema de Registros</h1>
 
   <!-- Botón para cargar datos CSV -->
 <div style="margin-bottom: 20px;">
@@ -338,7 +338,7 @@ function actualizarRegistro() {
             })
             .then(() => {
                 alert("Registro agregado con éxito");
-                cerrarFormulario();
+                //cerrarFormulario();
                 cargarRegistros();
             })
             .catch(error => console.error("Error al agregar registro:", error));
@@ -356,7 +356,8 @@ function actualizarRegistro() {
             alert("Debes iniciar sesión para crear un registro.");
             return;
         }
-        
+        // Poner nuevo registro en la coleccion "registro"
+        db.collection("registros").add({ nombre, apellido, dni, legajo, certificado })
         // Crear el documento en la colección "historial_creacion"
         db.collection("historial_creacion").add({
             nombre,
