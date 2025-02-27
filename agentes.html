@@ -19,7 +19,7 @@
 </head>
 <body>
   <h1>Agentes</h1>
-  <h2>Registro de Edición de los Gafentes</h2>
+  <h2>Registro de Edición de los Agentes</h2>
   
   <table id="agentesTable">
     <thead>
@@ -118,30 +118,56 @@
         })
         .catch(error => console.error("Error al cargar agentes:", error));
     }
-    
+
     function verActividad(email) {
-      document.getElementById("agenteId").innerText = `ID Agente: ${email}`;
-      document.getElementById("actividadContainer").style.display = "block";
-      document.getElementById("modificacionesBody").innerHTML = "";
-      document.getElementById("creacionBody").innerHTML = "";
-      document.getElementById("eliminacionBody").innerHTML = "";
-      
-      db.collection("historial_cambios").where("realizado_por", "==", email)
-        .orderBy("fecha", "desc").get().then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            const cambio = doc.data();
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-              <td>${cambio.campo_modificado}</td>
-              <td>${cambio.dato_anterior}</td>
-              <td>${cambio.dato_nuevo}</td>
-              <td>${formatearFecha(cambio.fecha)}</td>
-              <td>${cambio.registro_id}</td>
-            `;
-            document.getElementById("modificacionesBody").appendChild(tr);
-          });
-        }).catch(error => console.error("Error al cargar actividad:", error));
-    }
+    document.getElementById("agenteId").innerText = `ID Agente: ${email}`;
+    document.getElementById("actividadContainer").style.display = "block";
+
+    // Limpiar todas las tablas antes de cargar datos nuevos
+    document.getElementById("modificacionesBody").innerHTML = "";
+    document.getElementById("creacionBody").innerHTML = "";
+    document.getElementById("eliminacionBody").innerHTML = "";
+
+    // Cargar modificaciones desde historial_cambios
+    db.collection("historial_cambios").where("realizado_por", "==", email)
+        .orderBy("fecha", "desc").get()
+        .then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                const cambio = doc.data();
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${cambio.campo_modificado}</td>
+                    <td>${cambio.dato_anterior}</td>
+                    <td>${cambio.dato_nuevo}</td>
+                    <td>${formatearFecha(cambio.fecha)}</td>
+                    <td>${cambio.registro_id}</td>
+                `;
+                document.getElementById("modificacionesBody").appendChild(tr);
+            });
+        })
+        .catch(error => console.error("Error al cargar modificaciones:", error));
+
+    // Cargar creaciones desde historial_creacion
+    db.collection("historial_creacion").where("realizado_por", "==", email)
+        .orderBy("fecha", "desc").get()
+        .then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                const creacion = doc.data();
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${creacion.apellido}</td>
+                    <td>${creacion.nombre}</td>
+                    <td>${creacion.dni}</td>
+                    <td>${creacion.legajo}</td>
+                    <td>${formatearFecha(creacion.fecha)}</td>
+                `;
+                document.getElementById("creacionBody").appendChild(tr);
+            });
+        })
+        .catch(error => console.error("Error al cargar creaciones:", error));
+}
+
+
     
     setTimeout(() => {
   console.log("Ejecutando onAuthStateChanged...");
