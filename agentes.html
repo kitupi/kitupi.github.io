@@ -18,7 +18,7 @@
   </style>
 </head>
 <body>
-  <h1>Agentes</h1>
+  <h1>Agentes Cipol</h1>
   <h2>Registro de Edición de los Agentes</h2>
   
   <table id="agentesTable">
@@ -165,6 +165,25 @@
             });
         })
         .catch(error => console.error("Error al cargar creaciones:", error));
+
+    // Cargar creaciones desde historial_eliminacion
+    db.collection("historial_eliminacion").where("realizado_por", "==", email)
+        .orderBy("fecha", "desc").get()
+        .then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                const eliminacion = doc.data();
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${eliminacion.apellido}</td>
+                    <td>${eliminacion.nombre}</td>
+                    <td>${eliminacion.dni}</td>
+                    <td>${eliminacion.legajo}</td>
+                    <td>${formatearFecha(eliminacion.fecha)}</td>
+                `;
+                document.getElementById("eliminacionBody").appendChild(tr);
+            });
+        })
+        .catch(error => console.error("Error al cargar eliminaciones:", error));
 }
 
 
