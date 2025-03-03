@@ -6,13 +6,21 @@
     <title>Cursito Yeah</title>
     <style>
         body {
-            background-color: blue;
+            background-image: url("imagenes/chica.png");
+            background-size: cover; /* Cubre toda la pantalla sin espacios en blanco */
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed; /* Mantiene la imagen fija al hacer scroll */
             color: white;
             text-align: center;
             font-family: Arial, sans-serif;
         }
         h1 {
             margin-top: 20px;
+            background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para mejor lectura */
+            display: inline-block;
+            padding: 10px;
+            border-radius: 10px;
         }
         img {
             width: 80%;
@@ -38,7 +46,7 @@
     <img src="https://buenosaires.gob.ar/sites/default/files/media/image/2020/04/16/15d398428eae6336ae7430e04cd03120c30261ef.jpg" alt="Imagen Cursito">
     
     <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/xCnbGTE00eA" frameborder="0" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe>
     </div>
 
     <script src="https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js"
