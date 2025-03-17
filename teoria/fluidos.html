@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluidos: Hidrostática e Hidrodinámica</title>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        .examples {
+            background-color: #e6f7ff;
+            padding: 10px;
+            border-left: 4px solid #0073e6;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fluidos: Hidrostática e Hidrodinámica</h1>
+    
+    <h2>Definición de Fluido</h2>
+    <p>Un fluido es una sustancia que se deforma continuamente ante la acción de una fuerza externa, lo que incluye líquidos y gases.</p>
+    
+    <h2>Propiedades de los Fluidos</h2>
+    <p>Los líquidos tienen volumen definido pero adoptan la forma del recipiente. Los gases, en cambio, no tienen volumen ni forma definida.</p>
+    
+    <h3>Densidad</h3>
+    <p>La densidad se define como la masa por unidad de volumen: \( \rho = \frac{m}{V} \).</p>
+    <table border="1">
+        <tr><th>Material</th><th>Densidad (kg/m³)</th></tr>
+        <tr><td>Agua</td><td>1000</td></tr>
+        <tr><td>Aire</td><td>1.225</td></tr>
+    </table>
+    
+    <h3>Ecuación de Estado de los Gases</h3>
+    <p>La ecuación de estado de los gases ideales es \( PV = nRT \), con \( R = 8.314 \ J/(mol\cdot K) \).</p>
+    
+    <h2>Hidrostática</h2>
+    <h3>Experimento de Torricelli</h3>
+    <p>Torricelli midió la presión atmosférica con un tubo de mercurio.</p>
+    
+    <h3>Presión</h3>
+    <p>Presión absoluta, manométrica y barométrica. Unidades: Pascal (Pa).</p>
+    
+    <h3>Principio de Pascal</h3>
+    <p>La presión aplicada en un punto de un fluido se transmite íntegramente.</p>
+    <p>Ecuación: \( P_1 = P_2 \).</p>
+    
+    <h3>Ecuación Fundamental de la Hidrostática</h3>
+    <p>\( P = P_0 + \rho g h \).</p>
+    
+    <h3>Ejemplo Resuelto</h3>
+    <p>Calcular la presión a 10m bajo el agua. \( P = 101325 + (1000)(9.81)(10) = 199425 \ Pa \).</p>
+    
+    <h2>Hidrodinámica</h2>
+    <h3>Caudal</h3>
+    <p>Se define como \( Q = Av \). Unidad: \( m^3/s \).</p>
+    
+    <h3>Viscosidad</h3>
+    <p>Es la resistencia del fluido al movimiento. Unidad: Pascal-segundo (Pa·s).</p>
+    
+    <h3>Número de Reynolds</h3>
+    <p>Indica si el flujo es laminar o turbulento: \( Re = \frac{\rho v D}{\mu} \).</p>
+    
+    <h3>Ecuación de Continuidad</h3>
+    <p>\( A_1 v_1 = A_2 v_2 \).</p>
+    
+    <h3>Ecuación de Bernoulli</h3>
+    <p>\( P + \frac{1}{2} \rho v^2 + \rho g h = \text{constante} \).</p>
+    
+    <h3>Ecuación de Poiseuille</h3>
+    <p>Describe la caída de presión en una tubería: \( \Delta P = \frac{8 \mu L Q}{\pi R^4} \).</p>
+    
+    <h3>Ejemplo Resuelto</h3>
+    <p>Un tanque con agua a 5m de altura tiene un orificio. Velocidad de salida: \( v = \sqrt{2gh} = \sqrt{2(9.81)(5)} = 9.9 \ m/s \).</p>
+</body>
+</html>
