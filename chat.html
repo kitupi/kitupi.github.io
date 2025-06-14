@@ -3,22 +3,85 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chat Simple</title>
+  <title>Chat Público</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f2f2f2; }
-    #mensajes { max-height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; background: #fff; margin-bottom: 10px; }
-    .mensaje { margin-bottom: 10px; }
-    .nombre { font-weight: bold; color: #333; }
-    .texto { margin-left: 10px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f1f1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    #mensajes {
+      width: 100%;
+      max-width: 500px;
+      background: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      height: 300px;
+      overflow-y: auto;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .mensaje {
+      margin-bottom: 12px;
+    }
+
+    .mensaje strong {
+      color: #007BFF;
+      margin-right: 5px;
+    }
+
+    form {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #007BFF;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
   </style>
 </head>
 <body>
   <h2>Chat Público</h2>
+
   <div id="mensajes"></div>
 
   <form id="formMensaje">
     <input type="text" id="nombre" placeholder="Tu nombre" required />
-    <input type="text" id="mensaje" placeholder="Escribí tu mensaje" required />
+    <input type="text" id="mensaje" placeholder="Escribí un mensaje..." required />
     <button type="submit">Enviar</button>
   </form>
 
@@ -26,35 +89,51 @@
     const API_URL = 'https://joecoolman.pythonanywhere.com';
 
     async function cargarMensajes() {
-      const res = await fetch(`${API_URL}/ver_mensajes`);
-      const data = await res.json();
+      try {
+        const res = await fetch(`${API_URL}/ver_mensajes`);
+        const data = await res.json();
 
-      const contenedor = document.getElementById('mensajes');
-      contenedor.innerHTML = '';
-      data.mensajes.forEach(m => {
-        const div = document.createElement('div');
-        div.className = 'mensaje';
-        div.innerHTML = `<span class="nombre">${m.nombre}:</span><span class="texto">${m.mensaje}</span>`;
-        contenedor.appendChild(div);
-      });
+        const contenedor = document.getElementById('mensajes');
+        contenedor.innerHTML = '';
+        data.mensajes.reverse().forEach(m => {
+          const div = document.createElement('div');
+          div.className = 'mensaje';
+          div.innerHTML = `<strong>${m.nombre}:</strong> ${m.mensaje}`;
+          contenedor.appendChild(div);
+        });
+
+        contenedor.scrollTop = contenedor.scrollHeight; // autoscroll
+      } catch (err) {
+        console.error('Error cargando mensajes:', err);
+      }
     }
 
     document.getElementById('formMensaje').addEventListener('submit', async e => {
       e.preventDefault();
-      const nombre = document.getElementById('nombre').value;
-      const mensaje = document.getElementById('mensaje').value;
+      const nombre = document.getElementById('nombre').value.trim();
+      const mensaje = document.getElementById('mensaje').value.trim();
+      if (!nombre || !mensaje) return;
 
-      await fetch(`${API_URL}/guardar_mensaje`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ nombre, mensaje })
-      });
-
-      document.getElementById('mensaje').value = '';
-      cargarMensajes();
+      try {
+        const res = await fetch(`${API_URL}/guardar_mensaje`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ nombre, mensaje })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById('mensaje').value = '';
+          cargarMensajes();
+        } else {
+          alert("Error al guardar: " + data.error);
+        }
+      } catch (err) {
+        alert("Error de red al enviar mensaje.");
+        console.error(err);
+      }
     });
 
-    setInterval(cargarMensajes, 3000); // cada 3 segundos
+    setInterval(cargarMensajes, 3000);
     cargarMensajes();
   </script>
 </body>
