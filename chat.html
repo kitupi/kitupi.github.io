@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat Simple</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f2f2f2; }
+    #mensajes { max-height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; background: #fff; margin-bottom: 10px; }
+    .mensaje { margin-bottom: 10px; }
+    .nombre { font-weight: bold; color: #333; }
+    .texto { margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Chat Público</h2>
+  <div id="mensajes"></div>
+
+  <form id="formMensaje">
+    <input type="text" id="nombre" placeholder="Tu nombre" required />
+    <input type="text" id="mensaje" placeholder="Escribí tu mensaje" required />
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+    const API_URL = 'https://joecoolman.pythonanywhere.com';
+
+    async function cargarMensajes() {
+      const res = await fetch(`${API_URL}/ver_mensajes`);
+      const data = await res.json();
+
+      const contenedor = document.getElementById('mensajes');
+      contenedor.innerHTML = '';
+      data.mensajes.forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'mensaje';
+        div.innerHTML = `<span class="nombre">${m.nombre}:</span><span class="texto">${m.mensaje}</span>`;
+        contenedor.appendChild(div);
+      });
+    }
+
+    document.getElementById('formMensaje').addEventListener('submit', async e => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombre').value;
+      const mensaje = document.getElementById('mensaje').value;
+
+      await fetch(`${API_URL}/guardar_mensaje`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ nombre, mensaje })
+      });
+
+      document.getElementById('mensaje').value = '';
+      cargarMensajes();
+    });
+
+    setInterval(cargarMensajes, 3000); // cada 3 segundos
+    cargarMensajes();
+  </script>
+</body>
+</html>
