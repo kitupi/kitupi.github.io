@@ -137,7 +137,13 @@
       const nombre = document.getElementById('nombre').value.trim();
       const mensaje = document.getElementById('mensaje').value.trim();
       if (!nombre || !mensaje) return;
-
+    
+      // Verificar unicidad de nombre solo una vez
+      if (!nombreRegistrado) {
+        const ok = await verificarYRegistrarNombre(nombre);
+        if (!ok) return;
+      }
+    
       try {
         const res = await fetch(`${API_URL}/guardar_mensaje`, {
           method: 'POST',
@@ -156,7 +162,6 @@
         console.error(err);
       }
     });
-
     setInterval(cargarMensajes, 3000);
     cargarMensajes();
 
@@ -188,6 +193,35 @@
       const valor = selectorTamanio.value;
       panelMensajes.className = valor; // aplica clase directamente
     });
+
+    //*********VERIFICADOR NOMBRE UNICO ***********
+    let nombreRegistrado = false;
+    
+    async function verificarYRegistrarNombre(nombre) {
+        const formData = new FormData();
+        formData.append("nombre", nombre);
+    
+        try {
+            const res = await fetch("https://joecoolman.pythonanywhere.com/registrar_usuario", {
+                method: "POST",
+                body: formData
+            });
+    
+            if (res.ok) {
+                nombreRegistrado = true;
+                return true;
+            } else if (res.status === 409) {
+                alert("Ese nombre ya está en uso por otro usuario activo. Elegí otro.");
+                return false;
+            } else {
+                alert("Error al verificar el nombre.");
+                return false;
+            }
+        } catch (e) {
+            alert("Error de red al verificar el nombre.");
+            return false;
+        }
+    }
   </script>
 </body>
 </html>
