@@ -109,119 +109,147 @@
     <button type="submit">Enviar</button>
   </form>
 
-  <script>
-    const API_URL = 'https://joecoolman.pythonanywhere.com';
+<script>
+  const API_URL = 'https://joecoolman.pythonanywhere.com';
+  const LIMITE = 300;
+  const TIEMPO_EXPIRACION_MS = 10 * 60 * 1000; // 10 minutos
+  let nombreRegistrado = false;
 
-    async function cargarMensajes() {
-      try {
-        const res = await fetch(`${API_URL}/ver_mensajes`);
-        const data = await res.json();
+  // Verificar si hay un nombre válido guardado
+  function obtenerNombreLocalValido() {
+    const nombre = localStorage.getItem("nombre_chat");
+    const timestamp = parseInt(localStorage.getItem("nombre_chat_timestamp") || 0);
+    if (!nombre || Date.now() - timestamp > TIEMPO_EXPIRACION_MS) {
+      return null;
+    }
+    return nombre;
+  }
 
-        const contenedor = document.getElementById('mensajes');
-        contenedor.innerHTML = '';
-        data.mensajes.reverse().forEach(m => {
-          const div = document.createElement('div');
-          div.className = 'mensaje';
-          div.innerHTML = `<strong>${m.nombre}:</strong> ${m.mensaje}`;
-          contenedor.appendChild(div);
-        });
+  // Guardar nombre en localStorage
+  function guardarNombreLocal(nombre) {
+    localStorage.setItem("nombre_chat", nombre);
+    localStorage.setItem("nombre_chat_timestamp", Date.now());
+  }
 
-        contenedor.scrollTop = contenedor.scrollHeight; // autoscroll
-      } catch (err) {
-        console.error('Error cargando mensajes:', err);
-      }
+  // Al cargar la página, cargar nombre si existe y sigue siendo válido
+  document.addEventListener("DOMContentLoaded", () => {
+    const nombreInput = document.getElementById("nombre");
+    const nombreValido = obtenerNombreLocalValido();
+    if (nombreValido) {
+      nombreInput.value = nombreValido;
+      nombreInput.disabled = true;
+      nombreRegistrado = true;
+    }
+  });
+
+  async function cargarMensajes() {
+    try {
+      const res = await fetch(`${API_URL}/ver_mensajes`);
+      const data = await res.json();
+
+      const contenedor = document.getElementById('mensajes');
+      contenedor.innerHTML = '';
+      data.mensajes.reverse().forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'mensaje';
+        div.innerHTML = `<strong>${m.nombre}:</strong> ${m.mensaje}`;
+        contenedor.appendChild(div);
+      });
+
+      contenedor.scrollTop = contenedor.scrollHeight;
+    } catch (err) {
+      console.error('Error cargando mensajes:', err);
+    }
+  }
+
+  document.getElementById('formMensaje').addEventListener('submit', async e => {
+    e.preventDefault();
+    const nombre = document.getElementById('nombre').value.trim();
+    const mensaje = document.getElementById('mensaje').value.trim();
+    if (!nombre || !mensaje) return;
+
+    if (!nombreRegistrado) {
+      const ok = await verificarYRegistrarNombre(nombre);
+      if (!ok) return;
     }
 
-    document.getElementById('formMensaje').addEventListener('submit', async e => {
-      e.preventDefault();
-      const nombre = document.getElementById('nombre').value.trim();
-      const mensaje = document.getElementById('mensaje').value.trim();
-      if (!nombre || !mensaje) return;
-    
-      // Verificar unicidad de nombre solo una vez
-      if (!nombreRegistrado) {
-        const ok = await verificarYRegistrarNombre(nombre);
-        if (!ok) return;
-      }
-    
-      try {
-        const res = await fetch(`${API_URL}/guardar_mensaje`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({ nombre, mensaje })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          document.getElementById('mensaje').value = '';
-          cargarMensajes();
-        } else {
-          alert("Error al guardar: " + data.error);
-        }
-      } catch (err) {
-        alert("Error de red al enviar mensaje.");
-        console.error(err);
-      }
-    });
-    setInterval(cargarMensajes, 3000);
-    cargarMensajes();
-
-    //***contador de caracteres*******
-    const mensajeInput = document.getElementById('mensaje');
-    const contador = document.getElementById('contador');
-    const LIMITE = 300;
-    
-    mensajeInput.addEventListener('input', () => {
-      const restantes = LIMITE - mensajeInput.value.length;
-      contador.textContent = `Quedan ${restantes} caracteres`;
-    
-      if (restantes <= 10) {
-        contador.style.color = 'red';
+    try {
+      const res = await fetch(`${API_URL}/guardar_mensaje`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ nombre, mensaje })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        document.getElementById('mensaje').value = '';
+        cargarMensajes();
       } else {
-        contador.style.color = '#333';
+        alert("Error al guardar: " + data.error);
       }
-    
-      // Forzar el límite incluso si se pega texto muy largo
-      if (mensajeInput.value.length > LIMITE) {
-        mensajeInput.value = mensajeInput.value.substring(0, LIMITE);
-      }
-    });
-
-    const selectorTamanio = document.getElementById('tamanioTexto');
-    const panelMensajes = document.getElementById('mensajes');
-    
-    selectorTamanio.addEventListener('change', () => {
-      const valor = selectorTamanio.value;
-      panelMensajes.className = valor; // aplica clase directamente
-    });
-
-    //*********VERIFICADOR NOMBRE UNICO ***********
-    let nombreRegistrado = false;
-    
-    async function verificarYRegistrarNombre(nombre) {
-        const formData = new FormData();
-        formData.append("nombre", nombre);
-    
-        try {
-            const res = await fetch("https://joecoolman.pythonanywhere.com/registrar_usuario", {
-                method: "POST",
-                body: formData
-            });
-    
-            if (res.ok) {
-                nombreRegistrado = true;
-                return true;
-            } else if (res.status === 409) {
-                alert("Ese nombre ya está en uso por otro usuario activo. Elegí otro.");
-                return false;
-            } else {
-                alert("Error al verificar el nombre.");
-                return false;
-            }
-        } catch (e) {
-            alert("Error de red al verificar el nombre.");
-            return false;
-        }
+    } catch (err) {
+      alert("Error de red al enviar mensaje.");
+      console.error(err);
     }
-  </script>
+  });
+
+  setInterval(cargarMensajes, 3000);
+  cargarMensajes();
+
+  // Contador de caracteres
+  const mensajeInput = document.getElementById('mensaje');
+  const contador = document.getElementById('contador');
+
+  mensajeInput.addEventListener('input', () => {
+    const restantes = LIMITE - mensajeInput.value.length;
+    contador.textContent = `Quedan ${restantes} caracteres`;
+
+    if (restantes <= 10) {
+      contador.style.color = 'red';
+    } else {
+      contador.style.color = '#333';
+    }
+
+    if (mensajeInput.value.length > LIMITE) {
+      mensajeInput.value = mensajeInput.value.substring(0, LIMITE);
+    }
+  });
+
+  const selectorTamanio = document.getElementById('tamanioTexto');
+  const panelMensajes = document.getElementById('mensajes');
+
+  selectorTamanio.addEventListener('change', () => {
+    const valor = selectorTamanio.value;
+    panelMensajes.className = valor;
+  });
+
+  // Verificador de nombre único con guardado en localStorage
+  async function verificarYRegistrarNombre(nombre) {
+    const formData = new FormData();
+    formData.append("nombre", nombre);
+
+    try {
+      const res = await fetch(`${API_URL}/registrar_usuario`, {
+        method: "POST",
+        body: formData
+      });
+
+      if (res.ok) {
+        nombreRegistrado = true;
+        guardarNombreLocal(nombre);
+        document.getElementById('nombre').disabled = true;
+        return true;
+      } else if (res.status === 409) {
+        alert("Ese nombre ya está en uso por otro usuario activo. Elegí otro.");
+        return false;
+      } else {
+        alert("Error al verificar el nombre.");
+        return false;
+      }
+    } catch (e) {
+      alert("Error de red al verificar el nombre.");
+      return false;
+    }
+  }
+</script>
 </body>
 </html>
