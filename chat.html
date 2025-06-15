@@ -102,7 +102,7 @@
 
   <form id="formMensaje">
     <input type="text" id="nombre" placeholder="Tu nombre" required />
-    <button type="button" id="btnCambiarNombre">Cambiar nombre</button>
+    <button type="button" id="btnCambiarNombre" style="display: none;">Cambiar nombre</button>
     <div id="contador" style="text-align: right; font-size: 0.9em; color: #333;">
       Quedan 300 caracteres
     </div>
@@ -132,6 +132,14 @@
     localStorage.setItem("nombre_chat_timestamp", Date.now());
   }
 
+  // Mostrar u ocultar el botón "Cambiar nombre"
+  function mostrarBotonCambiarNombre(mostrar) {
+    const boton = document.getElementById("btnCambiarNombre");
+    if (boton) {
+      boton.style.display = mostrar ? "inline-block" : "none";
+    }
+  }
+
   // Al cargar la página, cargar nombre si existe y sigue siendo válido
   document.addEventListener("DOMContentLoaded", () => {
     const nombreInput = document.getElementById("nombre");
@@ -140,6 +148,9 @@
       nombreInput.value = nombreValido;
       nombreInput.disabled = true;
       nombreRegistrado = true;
+      mostrarBotonCambiarNombre(true);
+    } else {
+      mostrarBotonCambiarNombre(false);
     }
   });
 
@@ -238,6 +249,7 @@
         nombreRegistrado = true;
         guardarNombreLocal(nombre);
         document.getElementById('nombre').disabled = true;
+        mostrarBotonCambiarNombre(true);
         return true;
       } else if (res.status === 409) {
         alert("Ese nombre ya está en uso por otro usuario activo. Elegí otro.");
@@ -258,14 +270,17 @@
   function cambiarNombre() {
     localStorage.removeItem("nombre_chat");
     localStorage.removeItem("nombre_chat_timestamp");
-  
+
     const inputNombre = document.getElementById("nombre");
     inputNombre.disabled = false;
     inputNombre.focus();
     nombreRegistrado = false;
-  
+
+    mostrarBotonCambiarNombre(false);
+
     alert("Ahora podés ingresar un nuevo nombre.");
   }
 </script>
+  
 </body>
 </html>
