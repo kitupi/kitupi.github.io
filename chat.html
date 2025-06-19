@@ -119,6 +119,77 @@
   const TIEMPO_EXPIRACION_MS = 10 * 60 * 1000; // 10 minutos
   let nombreRegistrado = false;
 
+  // TEXTOS EN DISTINTOS IDIOMAS
+  const textos = {
+    en: {
+      aviso: "This is a chat to listen and support each other.",
+      amabilidad: "Be kind, understanding, and tolerant. You are not alone!",
+      tamanio: "Text size:",
+      cambiar: "Change name",
+      placeholderNombre: "Your name",
+      placeholderMensaje: "Type your message...",
+      enviar: "Send",
+      contador: restantes => `${restantes} characters remaining`
+    },
+    es: {
+      aviso: "Este es un chat para escucharnos y ayudarnos.",
+      amabilidad: "Sé amable, comprensivo y tolerante. ¡No estás solo!",
+      tamanio: "Tamaño texto:",
+      cambiar: "Cambiar nombre",
+      placeholderNombre: "Tu nombre",
+      placeholderMensaje: "Escribí tu mensaje...",
+      enviar: "Enviar",
+      contador: restantes => `Quedan ${restantes} caracteres`
+    },
+    fr: {
+      aviso: "Ceci est un chat pour s'écouter et s'entraider.",
+      amabilidad: "Sois aimable, compréhensif et tolérant. Tu n'es pas seul !",
+      tamanio: "Taille du texte :",
+      cambiar: "Changer de nom",
+      placeholderNombre: "Ton nom",
+      placeholderMensaje: "Écris ton message...",
+      enviar: "Envoyer",
+      contador: restantes => `${restantes} caractères restants`
+    },
+    de: {
+      aviso: "Dies ist ein Chat, um einander zuzuhören und zu helfen.",
+      amabilidad: "Sei freundlich, verständnisvoll und tolerant. Du bist nicht allein!",
+      tamanio: "Textgröße:",
+      cambiar: "Namen ändern",
+      placeholderNombre: "Dein Name",
+      placeholderMensaje: "Schreib deine Nachricht...",
+      enviar: "Senden",
+      contador: restantes => `Noch ${restantes} Zeichen`
+    },
+    pt: {
+      aviso: "Este é um chat para nos ouvirmos e nos ajudarmos.",
+      amabilidad: "Seja gentil, compreensivo e tolerante. Você não está sozinho!",
+      tamanio: "Tamanho do texto:",
+      cambiar: "Mudar nome",
+      placeholderNombre: "Seu nome",
+      placeholderMensaje: "Escreva sua mensagem...",
+      enviar: "Enviar",
+      contador: restantes => `${restantes} caracteres restantes`
+    },
+    ru: {
+      aviso: "Это чат для поддержки и взаимопомощи.",
+      amabilidad: "Будьте добры, терпимы и понимающи. Вы не одиноки!",
+      tamanio: "Размер текста:",
+      cambiar: "Сменить имя",
+      placeholderNombre: "Ваше имя",
+      placeholderMensaje: "Введите ваше сообщение...",
+      enviar: "Отправить",
+      contador: restantes => `Осталось ${restantes} символов`
+    }
+  };
+
+  function obtenerIdiomaDesdeURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("idioma") || "en";
+  }
+  
+  const idioma = obtenerIdiomaDesdeURL();
+
   // Verificar si hay un nombre válido guardado
   function obtenerNombreLocalValido() {
     const nombre = localStorage.getItem("nombre_chat");
@@ -155,11 +226,23 @@
     } else {
       mostrarBotonCambiarNombre(false);
     }
+    const t = textos[idioma] || textos["en"];
+    document.querySelector("div strong").textContent = t.aviso;
+    document.querySelector("div strong").nextSibling.textContent = t.amabilidad;
+  
+    document.querySelector("label[for='tamanioTexto']").textContent = t.tamanio;
+  
+    document.getElementById("nombre").placeholder = t.placeholderNombre;
+    document.getElementById("mensaje").placeholder = t.placeholderMensaje;
+    document.getElementById("btnCambiarNombre").textContent = t.cambiar;
+    document.querySelector("button[type='submit']").textContent = t.enviar;
+    document.getElementById("contador").textContent = t.contador(LIMITE);
   });
 
   async function cargarMensajes() {
     try {
-      const res = await fetch(`${API_URL}/ver_mensajes`);
+      //const res = await fetch(`${API_URL}/ver_mensajes`);
+      const res = await fetch(`${API_URL}/ver_mensajes?idioma=${idioma}`);
       const data = await res.json();
 
       const contenedor = document.getElementById('mensajes');
@@ -192,7 +275,8 @@
       const res = await fetch(`${API_URL}/guardar_mensaje`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ nombre, mensaje })
+        //body: new URLSearchParams({ nombre, mensaje })
+        body: new URLSearchParams({ nombre, mensaje, idioma })
       });
       const data = await res.json();
       if (res.ok) {
@@ -216,7 +300,8 @@
 
   mensajeInput.addEventListener('input', () => {
     const restantes = LIMITE - mensajeInput.value.length;
-    contador.textContent = `Quedan ${restantes} caracteres`;
+    //contador.textContent = `Quedan ${restantes} caracteres`;
+    contador.textContent = textos[idioma].contador(restantes);
 
     if (restantes <= 10) {
       contador.style.color = 'red';
