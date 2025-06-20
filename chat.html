@@ -198,6 +198,29 @@
     }
   };
 
+  // COLORES
+  const userColors = [
+    "#1f77b4", // azul
+    "#2ca02c", // verde
+    "#d62728", // rojo
+    "#9467bd", // violeta
+    "#ff7f0e", // naranja
+    "#8c564b", // marrón
+    "#e377c2", // rosa
+    "#17becf", // celeste
+    "#7f7f7f", // gris oscuro
+    "#bcbd22"  // oliva
+  ];
+
+  function colorPorUsuario(nombre) {
+    let hash = 0;
+    for (let i = 0; i < nombre.length; i++) {
+      hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const index = Math.abs(hash) % userColors.length;
+    return userColors[index];
+  }
+
   function obtenerIdiomaDesdeURL() {
     const params = new URLSearchParams(window.location.search);
     return params.get("idioma") || "en";
@@ -269,7 +292,10 @@
       data.mensajes.reverse().forEach(m => {
         const div = document.createElement('div');
         div.className = 'mensaje';
-        div.innerHTML = `<strong>${m.nombre}:</strong> ${m.mensaje}`;
+        /**div.innerHTML = `<strong>${m.nombre}:</strong> ${m.mensaje}`;
+        contenedor.appendChild(div);**/
+        const color = colorPorUsuario(m.nombre);
+        div.innerHTML = `<strong style="color:${color}">${m.nombre}:</strong> ${m.mensaje}`;
         contenedor.appendChild(div);
       });
 
