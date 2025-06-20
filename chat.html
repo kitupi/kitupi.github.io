@@ -92,11 +92,11 @@
 
   <div style="display: flex; justify-content: space-between; align-items: center;">
     <div>
-      <label for="tamanioTexto">Tamaño texto:</label>
+      <label for="tamanioTexto" id="label_tamanio">Tamaño texto:</label>
       <select id="tamanioTexto">
-        <option value="normal">Normal</option>
-        <option value="mediano">Mediano</option>
-        <option value="grande">Grande</option>
+        <option value="normal" id="opt_normal">Normal</option>
+        <option value="mediano" id="opt_mediano">Mediano</option>
+        <option value="grande" id="opt_grande">Grande</option>
       </select>
     </div>
   </div>
@@ -136,6 +136,9 @@
       amabilidad: "Sé amable, comprensivo y tolerante. ¡No estás solo!",
       tamanio: "Tamaño texto:",
       cambiar: "Cambiar nombre",
+      normal: "Normal",
+      mediano: "Mediano",
+      grande: "Grande je"
       placeholderNombre: "Tu nombre",
       placeholderMensaje: "Escribí tu mensaje...",
       enviar: "Enviar",
@@ -227,12 +230,14 @@
       mostrarBotonCambiarNombre(false);
     }
     const t = textos[idioma] || textos["en"];
-    /**document.querySelector("div strong").textContent = t.aviso;
-    document.querySelector("div strong").nextSibling.textContent = t.amabilidad;**/
     document.getElementById("frase_aviso").textContent = t.aviso;
     document.getElementById("frase_amabilidad").textContent = t.amabilidad;
   
     document.querySelector("label[for='tamanioTexto']").textContent = t.tamanio;
+    //document.getElementById("label_tamanio").textContent = t.tamanio_texto;
+    document.getElementById("opt_normal").textContent = t.normal;
+    document.getElementById("opt_mediano").textContent = t.mediano;
+    document.getElementById("opt_grande").textContent = t.grande;
   
     document.getElementById("nombre").placeholder = t.placeholderNombre;
     document.getElementById("mensaje").placeholder = t.placeholderMensaje;
