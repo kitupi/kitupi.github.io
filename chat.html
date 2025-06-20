@@ -85,9 +85,12 @@
   </style>
 </head>
 <body>
-  <div id="avisoChat" style="background-color: #f0f8ff; padding: 10px; border-left: 5px solid #4caf50; margin-bottom: 15px; border-radius: 8px; transition: all 1s ease;">
-    <strong id="frase_aviso">Este es un chat para escucharnos y ayudarnos.</strong><br />
-    <span id="frase_amabilidad">Sé amable, comprensivo y tolerante. ¡No estás solo!</span>
+  <div id="contenedorPrincipal" style="display: flex; flex-direction: column; height: 80vh;">
+    <div id="avisoChat" style="background-color: #f0f8ff; padding: 10px; border-left: 5px solid #4caf50; margin-bottom: 15px; border-radius: 8px; transition: all 1s ease;">
+      <strong id="frase_aviso">Este es un chat para escucharnos y ayudarnos.</strong><br />
+      <span id="frase_amabilidad">Sé amable, comprensivo y tolerante. ¡No estás solo!</span>
+    </div>
+    <div id="mensajes" style="background-color:#f9f9f9; padding:10px; border-radius:8px;"></div>
   </div>
 
   <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -101,7 +104,7 @@
     </div>
   </div>
 
-  <div id="mensajes" style="background-color:#f9f9f9; padding:10px; border-radius:8px;"></div>
+  //
 
   <form id="formMensaje">
     <input type="text" id="nombre" placeholder="Tu nombre" required />
@@ -420,15 +423,15 @@
   // Desaparecer Aviso Encabezado
   setTimeout(() => {
     const aviso = document.getElementById("avisoChat");
-      if (aviso) {
-        aviso.style.opacity = 0;
-        aviso.style.marginBottom = "0";
-        aviso.style.padding = "0";
-        aviso.style.height = "0";
-        aviso.style.overflow = "hidden";
-        setTimeout(() => aviso.remove(), 1000); // lo elimina del DOM 1s después de animar
-      }
+    if (aviso) {
+      aviso.style.opacity = 0;
+      aviso.style.marginBottom = "0";
+      aviso.style.padding = "0";
+      aviso.style.height = "0";
+      aviso.style.overflow = "hidden";
+    }
   }, 5000); // 5 segundos visible
+  setTimeout(() => aviso.remove(), 1500);
   
 </script>
   
