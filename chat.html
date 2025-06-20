@@ -90,21 +90,21 @@
       <strong id="frase_aviso">Este es un chat para escucharnos y ayudarnos.</strong><br />
       <span id="frase_amabilidad">Sé amable, comprensivo y tolerante. ¡No estás solo!</span>
     </div>
+
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <label for="tamanioTexto" id="label_tamanio">Tamaño texto:</label>
+        <select id="tamanioTexto">
+          <option value="normal" id="opt_normal">Normal</option>
+          <option value="mediano" id="opt_mediano">Mediano</option>
+          <option value="grande" id="opt_grande">Grande</option>
+        </select>
+      </div>
+    </div>
     <div id="mensajes" style="background-color:#f9f9f9; padding:10px; border-radius:8px;"></div>
   </div>
-
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <div>
-      <label for="tamanioTexto" id="label_tamanio">Tamaño texto:</label>
-      <select id="tamanioTexto">
-        <option value="normal" id="opt_normal">Normal</option>
-        <option value="mediano" id="opt_mediano">Mediano</option>
-        <option value="grande" id="opt_grande">Grande</option>
-      </select>
-    </div>
-  </div>
-
-  //
+  
 
   <form id="formMensaje">
     <input type="text" id="nombre" placeholder="Tu nombre" required />
