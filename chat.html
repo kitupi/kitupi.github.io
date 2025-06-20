@@ -253,11 +253,8 @@
   }
 
   // Mostrar u ocultar el botón "Cambiar nombre"
-  function mostrarBotonCambiarNombre(mostrar) {
-    const boton = document.getElementById("btnCambiarNombre");
-    if (boton) {
-      boton.style.display = mostrar ? "inline-block" : "none";
-    }
+  function mostrarBotonCambiarNombre(visible) {
+    document.getElementById("btnCambiarNombre").style.display = visible ? "inline-block" : "none";
   }
 
   // Al cargar la página, cargar nombre si existe y sigue siendo válido
@@ -268,7 +265,7 @@
       nombreInput.value = nombreValido;
       nombreInput.disabled = true;
       nombreRegistrado = true;
-      mostrarBotonCambiarNombre(true);
+      mostrarBotonCambiarNombreSiCorresponde();  // deja que esta función decida
     } else {
       mostrarBotonCambiarNombre(false);
     }
@@ -420,6 +417,20 @@
     mostrarBotonCambiarNombre(false);
 
     alert("Ahora podés ingresar un nuevo nombre.");
+  }
+  
+  function mostrarBotonCambiarNombreSiCorresponde() {
+    const timestamp = parseInt(localStorage.getItem("nombre_chat_timestamp") || 0);
+    const ahora = Date.now();
+    const LIMITE = 5 * 60 * 1000;
+  
+    if (ahora - timestamp > LIMITE) {
+      mostrarBotonCambiarNombre(true);
+    } else {
+      mostrarBotonCambiarNombre(false);
+      // Verificamos de nuevo cuando pasen los minutos restantes
+      setTimeout(mostrarBotonCambiarNombreSiCorresponde, LIMITE - (ahora - timestamp));
+    }
   }
   
   // Desaparecer Aviso Encabezado
