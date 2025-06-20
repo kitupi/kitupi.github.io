@@ -85,7 +85,7 @@
   </style>
 </head>
 <body>
-  <div id="avisoChat" style="background-color: #f0f8ff; padding: 10px; border-left: 5px solid #4caf50; margin-bottom: 15px; border-radius: 8px; transition: all 2s ease;">
+  <div id="avisoChat" style="background-color: #f0f8ff; padding: 10px; border-left: 5px solid #4caf50; margin-bottom: 15px; border-radius: 8px; transition: all 1s ease;">
     <strong id="frase_aviso">Este es un chat para escucharnos y ayudarnos.</strong><br />
     <span id="frase_amabilidad">Sé amable, comprensivo y tolerante. ¡No estás solo!</span>
   </div>
@@ -416,6 +416,20 @@
 
     alert("Ahora podés ingresar un nuevo nombre.");
   }
+  
+  // Desaparecer Aviso Encabezado
+  setTimeout(() => {
+    const aviso = document.getElementById("avisoChat");
+      if (aviso) {
+        aviso.style.opacity = 0;
+        aviso.style.marginBottom = "0";
+        aviso.style.padding = "0";
+        aviso.style.height = "0";
+        aviso.style.overflow = "hidden";
+        setTimeout(() => aviso.remove(), 1000); // lo elimina del DOM 1s después de animar
+      }
+  }, 5000); // 5 segundos visible
+  
 </script>
   
 </body>
