@@ -393,18 +393,24 @@
   async function verificarYRegistrarNombre(nombre) {
     const formData = new FormData();
     formData.append("nombre", nombre);
-
+  
     try {
       const res = await fetch(`${API_URL}/registrar_usuario`, {
         method: "POST",
         body: formData
       });
-
+  
       if (res.ok) {
         nombreRegistrado = true;
         guardarNombreLocal(nombre);
         document.getElementById('nombre').disabled = true;
-        mostrarBotonCambiarNombre(true);
+  
+        // ⛔ No mostrar el botón de inmediato
+        mostrarBotonCambiarNombre(false);
+  
+        // ✅ Pero programamos su aparición dentro de 5 minutos
+        setTimeout(mostrarBotonCambiarNombreSiCorresponde, 5 * 60 * 1000);
+  
         return true;
       } else if (res.status === 409) {
         alert("Ese nombre ya está en uso por otro usuario activo. Elegí otro.");
