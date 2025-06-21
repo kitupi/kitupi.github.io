@@ -321,6 +321,12 @@
       if (!ok) return;
     }
 
+    // Anti Flooding
+    puedeEnviar = false;
+    setTimeout(() => {
+      puedeEnviar = true;
+    }, 3000); // ← 3 segundos
+
     try {
       const res = await fetch(`${API_URL}/guardar_mensaje`, {
         method: 'POST',
