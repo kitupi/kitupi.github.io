@@ -254,7 +254,9 @@
 
   // Mostrar u ocultar el botón "Cambiar nombre"
   function mostrarBotonCambiarNombre(visible) {
-    document.getElementById("btnCambiarNombre").style.display = visible ? "inline-block" : "none";
+    const btn = document.getElementById("btnCambiarNombre");
+    btn.style.display = visible ? "inline-block" : "none";
+    btn.disabled = !visible;
   }
 
   // Al cargar la página, cargar nombre si existe y sigue siendo válido
@@ -427,17 +429,20 @@
     alert("Ahora podés ingresar un nuevo nombre.");
   }
   
+// Ver si corresponde mostrar el botón para cambiar nombre (después de 5 minutos)
   function mostrarBotonCambiarNombreSiCorresponde() {
     const timestamp = parseInt(localStorage.getItem("nombre_chat_timestamp") || 0);
     const ahora = Date.now();
-    const LIMITE = 5 * 60 * 1000;
+    const LIMITE_MS = 5 * 60 * 1000; // 5 minutos en milisegundos
   
-    if (ahora - timestamp > LIMITE) {
+    if (ahora - timestamp > LIMITE_MS) {
       mostrarBotonCambiarNombre(true);
     } else {
       mostrarBotonCambiarNombre(false);
-      // Verificamos de nuevo cuando pasen los minutos restantes
-      setTimeout(mostrarBotonCambiarNombreSiCorresponde, LIMITE - (ahora - timestamp));
+      const falta = LIMITE_MS - (ahora - timestamp);
+      setTimeout(() => {
+        mostrarBotonCambiarNombre(true);
+      }, falta);
     }
   }
   
