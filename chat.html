@@ -318,6 +318,13 @@
     if (!puedeEnviar) return; // Bloqueo por flooding
     const nombre = document.getElementById('nombre').value.trim();
     const mensaje = document.getElementById('mensaje').value.trim();
+
+      // ✅ Validación de longitud del nombre
+    if (nombre.length < 4 || nombre.length > 10) {
+      alert("El nombre debe tener entre 4 y 10 caracteres.");
+      return;
+    }
+    
     if (!nombre || !mensaje) return;
 
     if (!nombreRegistrado) {
