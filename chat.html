@@ -310,8 +310,10 @@
     }
   }
 
+  let puedeEnviar = true;
   document.getElementById('formMensaje').addEventListener('submit', async e => {
     e.preventDefault();
+    if (!puedeEnviar) return; // Bloqueo por flooding
     const nombre = document.getElementById('nombre').value.trim();
     const mensaje = document.getElementById('mensaje').value.trim();
     if (!nombre || !mensaje) return;
