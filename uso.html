@@ -4,7 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cómo usar AnunciaYapp</title>
+  <script>
+    if (new URLSearchParams(location.search).get('app') === '1') {
+      document.documentElement.classList.add('en-app');
+    }
+  </script>
   <style>
+    .en-app header h1 { display: none; }
     * { box-sizing: border-box; }
     body {
       margin: 0; height: 100vh; height: 100dvh;
@@ -82,6 +88,11 @@
   <section id="seguidos">
     <h2>Seguir un producto y recibir rebajas</h2>
     <p>Marcá el producto que te interesa para guardarlo en tus seguidos. Si es una <strong>publicación paga</strong> y el vendedor baja el precio, recibirás un aviso con el precio anterior y el nuevo. Permití las notificaciones de AnunciaYapp en tu teléfono y tocá el aviso para ver el producto.</p>
+  </section>
+  <section id="avisos-nuevos">
+    <h2>Avisos de productos nuevos</h2>
+    <p>En el menú, abrí <strong>Avisos de productos nuevos</strong>. Activá el aviso, elegí la localidad y el rubro. Si buscás algo específico, agregá palabras del nombre, por ejemplo «bicicleta». Tocá <strong>Guardar</strong>.</p>
+    <p>El aviso llega a partir de los 30 minutos de publicada la oferta, si sigue vigente. Para dejar de recibirlo, desactivá la opción y guardá.</p>
   </section>
   <section id="rubros">
     <h2>Rubros disponibles</h2>
