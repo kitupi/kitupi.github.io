@@ -6,18 +6,41 @@
   <title>Cómo usar AnunciaYapp</title>
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; color: #20313b; background: #fff; font: 1rem/1.55 system-ui, sans-serif; }
-    header, main { max-width: 44rem; margin: auto; padding: 1rem; }
-    header { border-bottom: 1px solid #cbd7d7; }
-    h1 { margin: .4rem 0; font-size: 1.8rem; }
-    h2 { margin: 0 0 .4rem; font-size: 1.22rem; }
-    nav { display: flex; flex-wrap: wrap; gap: .3rem 1rem; }
-    a { color: #075a64; padding: .3rem 0; }
-    section { padding: 1rem 0; border-bottom: 1px solid #dde5e5; }
+    body {
+      margin: 0; height: 100vh; height: 100dvh;
+      display: grid; grid-template-rows: auto minmax(0, 1fr);
+      color: #233c3a; background: #edf5f1; font: 1rem/1.55 system-ui, sans-serif;
+    }
+    header {
+      background: #164c4a; color: #fff;
+      border-bottom: 3px solid #e5b46e;
+      padding: .55rem max(1rem, calc((100% - 42rem) / 2));
+    }
+    h1 { margin: 0 0 .15rem; font-size: 1.35rem; line-height: 1.25; }
+    nav { display: flex; flex-wrap: wrap; gap: 0 .85rem; }
+    nav a {
+      display: inline-flex; align-items: center; min-height: 2rem;
+      color: #f1fbf9; font-size: .75rem; font-weight: 600;
+      text-decoration-thickness: 1px; text-underline-offset: .22em;
+    }
+    nav a:focus-visible { outline: 2px solid #ffda9c; outline-offset: 2px; }
+    main {
+      overflow-y: auto; scroll-padding-top: .75rem;
+      padding: .75rem max(.75rem, calc((100% - 44rem) / 2)) 2rem;
+      background: linear-gradient(145deg, #e7f3ed, #f8f4ea);
+    }
+    section {
+      margin: 0 0 .75rem; padding: 1rem 1.15rem;
+      border: 1px solid #ccdcd5; border-radius: .75rem; background: #fffefa;
+    }
+    h2 { margin: 0 0 .4rem; color: #155552; font-size: 1.22rem; }
     p, ol, ul { margin: .35rem 0; }
     ol, ul { padding-left: 1.5rem; }
     li + li { margin-top: .35rem; }
-    button { font: inherit; padding: .5rem 1rem; }
+    button {
+      font: inherit; padding: .5rem 1rem; color: #fff; background: #165956;
+      border: 0; border-radius: .45rem; cursor: pointer;
+    }
   </style>
 </head>
 <body>
