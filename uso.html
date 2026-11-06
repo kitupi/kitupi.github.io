@@ -1,336 +1,107 @@
-<!DOCTYPE html>
-<html lang="es">
+<!doctype html>
+<html lang="es-AR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modo de Uso y Rubros</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        nav {
-            background-color: #007bff;
-            padding: 10px;
-            text-align: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .content {
-            display: none;
-            padding: 80px 20px 20px; /* Añadido padding superior para evitar que el contenido quede oculto */
-        }
-        .active {
-            display: block;
-        }
-        h1, h2 {
-            text-align: center;
-            margin: 20px 0;
-        }
-        h1 {
-            color: #007bff;
-        }
-        .section {
-            margin: 20px;
-            padding: 20px;
-            border-radius: 8px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .section h2 {
-            color: #0056b3;
-        }
-        .section p {
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-        .highlight {
-            font-weight: bold;
-            color: #ff5722;
-        }
-    </style>
-    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cómo usar AnunciaYapp</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #20313b; background: #fff; font: 1rem/1.55 system-ui, sans-serif; }
+    header, main { max-width: 44rem; margin: auto; padding: 1rem; }
+    header { border-bottom: 1px solid #cbd7d7; }
+    h1 { margin: .4rem 0; font-size: 1.8rem; }
+    h2 { margin: 0 0 .4rem; font-size: 1.22rem; }
+    nav { display: flex; flex-wrap: wrap; gap: .3rem 1rem; }
+    a { color: #075a64; padding: .3rem 0; }
+    section { padding: 1rem 0; border-bottom: 1px solid #dde5e5; }
+    p, ol, ul { margin: .35rem 0; }
+    ol, ul { padding-left: 1.5rem; }
+    li + li { margin-top: .35rem; }
+    button { font: inherit; padding: .5rem 1rem; }
+  </style>
 </head>
 <body>
-    <nav>
-        <a href="#" onclick="showSection('modo-uso')">Modo de Uso</a>
-        <a href="#" onclick="showSection('rubros')">Rubros</a>
-    </nav>
-
-    <div id="modo-uso" class="content active">
-        
-
-        <div class="section">
-            <h2>Acerca de la App</h2>
-            <p>La app está diseñada para <span class="highlight">ampliar la difusión</span> de tus productos y servicios, permitiéndote llegar a más clientes potenciales y establecer una red sólida.</p>
-        </div>
-
-        <h1>Configurar la App</h1>
-
-        <div class="section">
-            <h2>Super Importante</h2>
-            <p>Los campos con <span class="highlight">asterísco *</span> son para llenado <span class="highlight">obligatorio</span>.</p>
-            <p>Los campos <span class="highlight">sin</span> asterisco, son opcionales, puedes o no llenarlos.</p>
-        </div>
-    
-        <div class="section">
-            <h2>Determinar Zonas</h2>
-            <p>Dirígete a <span class="highlight">Zonas de Interés</span> en el menú.</p>
-            <p>Selecciona tu <span class="highlight">provincia</span> y el <span class="highlight">departamento</span> donde es tu oferta.</p>
-            <p>También elige una provincia y al menos un departamento para buscar productos.</p>
-            <p>Esto es <span class="highlight">necesario</span> para el funcionamiento de la app.</p>
-        </div>
-
-        <div class="section">
-            <h2>Configurar Notificaciones</h2>
-            <p>Para recibir <span class="highlight">avisos</span> cuando se publique un producto de tu interés, selecciona un rubro y nombre de producto, si coincide con tu búsqueda, recibirás un aviso.</p>
-            <p>Si dejas el nombre de producto <span class="highlight">vacío</span>, recibirás avisos de cualquier producto de ese rubro.</p>
-        </div>
-
-        <h1>Uso Básico de la App</h1>
-
-        <div class="section">
-            <h2>Sugerencia de Escritura</h2>
-            <p>Cuando veas que la app te <span class="highlight">sugiera</span> palabras, elige directamente de esa lista (fondo naranja), de otro modo no va a reconocer lo que escribas.</p>
-        </div>
-
-        <div class="section">
-            <h2>Datos reconocidos</h2>
-            <p>La app posee <span class="highlight">listas</span> de provincias, sus departamentos y localidades <span class="highlight">oficiales</span>, si se intenta poner  otra cosa, no será reconocido.</p>
-            <p>Así mismo sucede con la lista de <span class="highlight">rubros</span>, sólo se reconocerán los que se muestran en la <span class="highlight"><a href="#rubros">lista actual de Rubros</a></span>.</p>
-        </div>
-
-        <h1>Publicar y Buscar</h1>
-
-        <div class="section">
-            <h2>Muy Importante</h2>
-            <p>Es crucial saber hacer una correcta <span class="highlight">búsqueda</span> y una correcta <span class="highlight">publicación</span>, atención con lo que viene.</p>
-        </div>
-
-        <div class="section">
-            <h2>Publicar</h2>
-            <p>Llena los campos obligatorios (con *), los demas son opcionales.</p>
-            <p>El nombre de producto debe ser <span class="highlight">genérico</span>, por ejemplo leche. Para especificar mas ese producto usa la <span class="highlight">palabra clave</span>, por ejemplo Serenísima. Si has usado un <u>crédito</u> para publicar, podrás especificar aún mas con otra palabra clave, ejemplo: descremada.</p>
-            <p>Entonces tu producto quedará bien identificado con esas tres palabras:
-                <ul>
-                    <li>Leche</li>
-                    <li>Serenísima</li>
-                    <li>Descremada</li>
-                </ul>
-                además de los otros datos, <span class="highlight">rubro</span> , descripcion, foto, precio, cantidad etc.
-            </p>
-            <p>La eleccion de esas 2 o 3 palabras es importante.</p>
-        </div>
-
-        <div class="section">
-            <h2>Buscar</h2>
-            <p>Se sugiere empezar con una <span class="highlight">búsqueda gruesa</span> solamente especificando el rubro y tocar el botón de búsqueda. Luego puede ir <span class="highlight">filtrando</span> los productos por localidad, por nombre de producto, por palabra clave; puede ser en la combinación que se le ocurra. Ejemplo:
-                <ul>
-                    <li>rubro: alimentos</li>
-                    <li>localidad: La Candelaria</li>
-                </ul>
-            </p>
-            <p>Va a encontrar todos los productos alimenticios publicados en la localidad La Candelaria. En cambio si usted pone:
-                <ul>
-                    <li>rubro: alimentos</li>
-                    <li>nombre de producto: leche</li>
-                </ul>
-            </p>
-            <p>Va a encontrar todos los productos referidos a leche en todo los departamentos de su zona de interés, es decir en todas las localidades. Si ahora especifica más poniendo:
-                <ul>
-                    <li>rubro: alimentos</li>
-                    <li>nombre de producto: leche</li>
-                    <li>palabra clave: serenísima</li>
-                </ul>
-            </p>
-            <p>Encontrará todos los productos de leche Serenísima en todos los departamentos de su zona de interés. Y por último, si pone:
-                <ul>
-                    <li>rubro: alimentos</li>
-                    <li>nombre de producto: leche</li>
-                    <li>palabra clave: serenísima</li>
-                    <li>localidad: La Candelaria</li>
-                </ul>
-            </p>
-            <p>Encontrará todos los productos de leche Serenísima sólo en la localidad La Candelaria.</p>
-        </div>
-
-        <div class="section">
-            <h2>Publicar con crédito</h2>
-            <p>La publicación usando crédito <span class="highlight">mejora las chances</span>  de que clientes vean más sobre sus productos o servicios porque podrá obtener:
-            <ul>
-                <li>Mayor tiempo de exposición</li>
-                <li>Publicar hasta 3 fotos</li>
-                <li>Mayor visibilidad en las búsquedas</li>
-                <li>Aviso de rebaja exclusivo del modo pago: si bajas el precio, quienes siguen ese producto reciben una notificación.</li>
-                <li>Una palabra clave extra</li>
-                <li>Mayor cantidad de palabras en la descripción</li>
-            </ul>
-            </p>
-            <p>Y por si esto fuera poco, además Usted podrá ganar:
-                <ul>
-                    <li>Mas visitas a su Facebook Marketplace !</li>
-                    <li>Consultas a su Whatsapp empresarial o personal ! </li>
-                </ul>
-            </p>
-            <p>Todo esto por un precio muy accesible.</p>
-        </div>
-
-        <div class="section">
-            <h2>Publicar sin crédito</h2>
-            <p>La publicación sin crédito es <span class="highlight">gratuita</span> y tiene las siguientes características:
-            <ul>
-                <li>Menor tiempo de exposición</li>
-                <li>Publicar una sola foto</li>
-                <li>Visibilidad Moderada en las búsquedas</li>
-                <li>Una sola palabra clave</li>
-                <li>Menor cantidad de palabras en la descripción</li>
-            </ul>
-            </p>
-            <p>Si Usted no tiene crédito, puede publicar igualmente máximo hasta dos productos gratis. En el caso de borrar una publicación, no podrá publicar inmediatamente sino después de un tiempo de penalización.</p>
-
-        </div>
-
-        <h1>Mas sobre la app</h1>
-    
-        <div class="section">
-            <h2>Modo Gratis y Modo Pago</h2>
-            <p>Ambos modos ofrecen espacio para descripción, precio, nombre y palabras clave. Sin embargo, en el <span class="highlight">Modo Pago</span> puedes cargar hasta 3 imágenes, tener más tiempo de exposición y aparecer primero en las búsquedas.</p>
-        </div>
-    
-        <div class="section">
-            <h2>Contacto con el Anunciante</h2>
-            <p>Puedes agregar WhatsApp en ambos modos. En Modo Pago también puedes incluir un enlace opcional a tu página de Facebook o a una publicación de Marketplace.</p>
-        </div>
-    
-        <div class="section">
-            <h2>Contacto por WhatsApp</h2>
-            <p>El número debe tener el <span class="highlight">código de área sin el 0</span> y el número de celular sin el 15. Ejemplo: 3512802978.</p>
-        </div>
-    
-        <div class="section">
-            <h2>Contacto por Facebook</h2>
-            <p>Las publicaciones deben ser <span class="highlight">públicas</span>. Copia el enlace de tu página de Facebook o de la publicación de Marketplace y pégalo en el campo de Facebook al elegir Modo Pago.</p>
-        </div>
-    
-        <div class="section">
-            <h2>Imágenes</h2>
-            <p>La app no toma fotos, selecciona desde tu galería. Usa imágenes atractivas y de tamaño moderado para facilitar la carga.</p>
-        </div>
-    
-        <div class="section">
-            <h2>Información de los Productos</h2>
-            <p>La app muestra información breve. En los resultados de búsqueda, toca una vez la foto del producto para abrir sus detalles. En publicaciones pagadas, puedes ver fotos adicionales.</p>
-        </div>
-    
-        <div class="section">
-            <h2>Desuscribirse</h2>
-            <p>La app está asociada a tu <span class="highlight">cuenta</span>.</p>
-            <p>Si te desuscribes, algunos datos se perderán en este dispositivo.</p>
-            <p>Es posible registrarte con la misma cuenta en otros dispositivos.</p>
-        </div>
-        
-        <div class="section">    
-            <h2>Edición de la Publicación</h2>
-            <p>En <span class="highlight">Mis Productos Publicados</span>, toca una vez la foto de tu producto para acceder a la edición del precio y la cantidad. Si ya vendiste todo, actualiza la cantidad a cero para informar a tus clientes.</p>
-        </div>
-    
-        <h1>Compra de Crédito para Publicación</h1>
-    
-        <div class="section">
-            <h2>Ruta de Pago</h2>
-            <p>Las compras se realizan mediante <span class="highlight">MercadoPago</span>. Una vez confirmado el pago, recibirás un crédito que podrás usar cuando lo decidas.</p>
-            <p>La app no captura tus datos de pago y está verificada por <span class="highlight">Google Play Protect</span>.</p>
-        </div>
-    </div>
-
-    <div id="rubros" class="content">
-        <h1>Rubros</h1>
-        <div class="section">
-            <h2>Categorías de Productos y Servicios</h2>
-            <p>Aquí puedes encontrar los distintos rubros en los que puedes publicar...</p>
-            <div id="lista-rubros">
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function showSection(sectionId) {
-            // Oculta todas las secciones
-            document.querySelectorAll('.content').forEach(section => {
-                section.classList.remove('active');
-            });
-    
-            // Muestra la sección seleccionada
-            document.getElementById(sectionId).classList.add('active');
-        }
-    
-        // Detecta el fragmento de la URL al cargar la página
-        document.addEventListener("DOMContentLoaded", function() {
-            const section = window.location.hash.substring(1); // Obtiene 'rubros' de '#rubros'
-            if (section) {
-                showSection(section);
-            }
-        });
-    
-        // Permite que los enlaces <a href="#rubros"> funcionen sin recargar
-        window.addEventListener("hashchange", function() {
-            const section = window.location.hash.substring(1);
-            if (section) {
-                showSection(section);
-            }
-        });
-    </script>
-    
-
-    <script type="module">
-        // Importar Firebase y Firestore
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
-        import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
-
-        // Configuración de Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCmyeFnhf-1nH8BWOh9zWSMq-0M5i2247o",
-            //authDomain: "TU_PROYECTO.firebaseapp.com",
-            projectId: "abc5-93cb8",
-            //storageBucket: "TU_PROYECTO.appspot.com",
-            //messagingSenderId: "TU_ID",
-            //appId: "1:710954699691:android:819da7955ed78c196a60ee"
-        };
-
-        // Inicializar Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Función para obtener los rubros
-        async function obtenerRubros() {
-            const rubrosRef = collection(db, "Rubros");
-            const snapshot = await getDocs(rubrosRef);
-
-            let rubrosHtml = "<ul>";
-            snapshot.forEach((doc) => {
-                rubrosHtml += `<li>${doc.data().nombre}</li>`;
-            });
-            rubrosHtml += "</ul>";
-
-            document.getElementById("lista-rubros").innerHTML = rubrosHtml;
-        }
-
-        // Llamar a la función cuando se cargue la página
-        document.addEventListener("DOMContentLoaded", obtenerRubros);
-    </script>
+<header>
+  <h1>Cómo usar AnunciaYapp</h1>
+  <nav aria-label="Ayuda"><a href="#buscar">Buscar</a><a href="#publicar">Publicar</a><a href="#fotos">Fotos</a><a href="#editar">Editar</a><a href="#seguidos">Seguidos</a><a href="#rubros">Rubros</a></nav>
+</header>
+<main id="modo-uso">
+  <section id="buscar">
+    <h2>Buscar un producto</h2>
+    <ol>
+      <li>En <strong>Buscar</strong>, elegí la localidad entre las sugerencias. Si ya aparece la que querés, usá esa.</li>
+      <li>Escribí qué buscás, por ejemplo «ropa para mascotas». Para explorar una categoría, elegí un rubro y dejá el texto vacío. Tocá <strong>Buscar</strong>.</li>
+      <li><strong>Tocá una vez la foto</strong> de un resultado para abrir los detalles. Si el vendedor agregó WhatsApp, podés contactarlo desde ahí.</li>
+    </ol>
+    <p>Entre los productos que coinciden con tu búsqueda, aparecen primero las publicaciones pagas.</p>
+  </section>
+  <section id="publicar">
+    <h2>Publicar un producto</h2>
+    <ol>
+      <li>En <strong>Publicar</strong>, elegí el rubro y la localidad. Escribí un nombre que describa lo que ofrecés, como «Bicicleta rodado 26». La app obtiene las palabras clave del nombre.</li>
+      <li>Completá la descripción, el precio y la cantidad. Debajo de la descripción, la perilla empieza en <strong>modo gratis</strong>. Si tenés créditos, movela a la derecha para elegir <strong>modo pago</strong>.</li>
+      <li>Agregá las fotos y, si querés, un medio de contacto. Revisá los datos y tocá <strong>Publicar</strong> con conexión a internet.</li>
+    </ol>
+    <p><strong>Gratis:</strong> una foto y hasta 100 caracteres de descripción. Podés agregar WhatsApp.</p>
+    <p><strong>Pago:</strong> usa un crédito, dura 30 días y admite de una a tres fotos y hasta 120 caracteres. Además de WhatsApp, podés agregar un enlace a tu página de Facebook o a una publicación de Marketplace.</p>
+  </section>
+  <section id="fotos">
+    <h2>Elegir o cambiar las fotos</h2>
+    <p><strong>Antes de publicar en Gratis,</strong> tocá el botón de imagen. Elegí <strong>Tomar fotografía</strong> para usar la cámara o <strong>Elegir imagen del dispositivo</strong> para usar una foto guardada. Para cambiarla, repetí la selección.</p>
+    <p><strong>Antes de publicar en Pago,</strong> elegí de una a tres fotos guardadas en el dispositivo. Si el selector admite varias, podés volver a abrirlo y elegir el conjunto completo. Si tu teléfono las pide de a una, agregalas de a una hasta completar la selección.</p>
+    <p>Si querés recortar o girar una foto, hacelo en la galería del teléfono antes de elegirla. <strong>Una vez publicada, las fotos quedan fijas.</strong></p>
+  </section>
+  <section id="editar">
+    <h2>Editar o eliminar un producto publicado</h2>
+    <p>En <strong>Mis Productos Publicados</strong>, <strong>tocá una vez la foto</strong> de tu producto. Cambiá el precio, la cantidad o ambos y tocá <strong>Actualizar</strong>. Esos son los dos datos que podés editar.</p>
+    <p>Para retirar el producto, tocá <strong>Eliminar</strong> en esa misma ventana y confirmá. Podés hacer una eliminación voluntaria cada 60 minutos por cuenta.</p>
+  </section>
+  <section id="seguidos">
+    <h2>Seguir un producto y recibir rebajas</h2>
+    <p>Marcá el producto que te interesa para guardarlo en tus seguidos. Si es una <strong>publicación paga</strong> y el vendedor baja el precio, recibirás un aviso con el precio anterior y el nuevo. Permití las notificaciones de AnunciaYapp en tu teléfono y tocá el aviso para ver el producto.</p>
+  </section>
+  <section id="rubros">
+    <h2>Rubros disponibles</h2>
+    <button id="cargar" type="button">Ver lista de rubros</button>
+    <p id="estado" role="status"></p>
+    <ul id="lista-rubros"></ul>
+  </section>
+</main>
+<script type="module">
+  const boton = document.querySelector('#cargar');
+  const estado = document.querySelector('#estado');
+  async function cargarRubros() {
+    if (boton.disabled || boton.hidden) return;
+    boton.disabled = true;
+    estado.textContent = 'Cargando rubros…';
+    try {
+      const [{ initializeApp, getApps }, { getFirestore, collection, getDocs }] = await Promise.all([
+        import('https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js'),
+        import('https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js')
+      ]);
+      const app = getApps()[0] || initializeApp({ apiKey: 'AIzaSyCmyeFnhf-1nH8BWOh9zWSMq-0M5i2247o', projectId: 'abc5-93cb8' });
+      const datos = await getDocs(collection(getFirestore(app), 'Rubros'));
+      const lista = document.querySelector('#lista-rubros');
+      const nombres = datos.docs.map(doc => doc.id).sort((a, b) => a.localeCompare(b, 'es'));
+      for (const nombre of nombres) {
+        const item = document.createElement('li');
+        item.textContent = nombre;
+        lista.appendChild(item);
+      }
+      estado.textContent = nombres.length ? '' : 'Todavía no hay rubros disponibles.';
+      boton.hidden = true;
+    } catch {
+      estado.textContent = 'No se pudo cargar la lista. Revisá tu conexión y volvé a intentar.';
+    } finally {
+      boton.disabled = false;
+    }
+  }
+  boton.addEventListener('click', cargarRubros);
+  function abrirRubros() {
+    if (location.hash === '#rubros') cargarRubros();
+  }
+  window.addEventListener('hashchange', abrirRubros);
+  abrirRubros();
+</script>
 </body>
 </html>
