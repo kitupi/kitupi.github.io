@@ -15,39 +15,44 @@
     body {
       margin: 0; height: 100vh; height: 100dvh;
       display: grid; grid-template-rows: auto minmax(0, 1fr);
-      color: #233c3a; background: #edf5f1; font: 1rem/1.55 system-ui, sans-serif;
+      color: #1E293B; background: #F5F7FC; font: 1rem/1.55 system-ui, sans-serif;
     }
     header {
-      background: #164c4a; color: #fff;
-      border-bottom: 3px solid #e5b46e;
+      background: #2457C5; color: #FFFFFF;
+      border-bottom: 3px solid #B9D0FF;
       padding: .55rem max(1rem, calc((100% - 42rem) / 2));
     }
     h1 { margin: 0 0 .15rem; font-size: 1.35rem; line-height: 1.25; }
     nav { display: flex; flex-wrap: wrap; gap: 0 .85rem; }
     nav a {
       display: inline-flex; align-items: center; min-height: 2rem;
-      color: #f1fbf9; font-size: .75rem; font-weight: 600;
+      color: #FFFFFF; font-size: .75rem; font-weight: 600;
       text-decoration-thickness: 1px; text-underline-offset: .22em;
     }
-    nav a:focus-visible { outline: 2px solid #ffda9c; outline-offset: 2px; }
+    nav a:focus-visible { outline: 2px solid #A9C6FF; outline-offset: 2px; }
     main {
       overflow-y: auto; scroll-padding-top: .75rem;
       padding: .75rem max(.75rem, calc((100% - 44rem) / 2)) 2rem;
-      background: linear-gradient(145deg, #e7f3ed, #f8f4ea);
+      background: linear-gradient(145deg, #E9EEF7, #F5F7FC);
     }
     section {
       margin: 0 0 .75rem; padding: 1rem 1.15rem;
-      border: 1px solid #ccdcd5; border-radius: .75rem; background: #fffefa;
+      border: 1px solid #C7D3E4; border-radius: .75rem; background: #FFFFFF;
     }
-    h2 { margin: 0 0 .4rem; color: #155552; font-size: 1.22rem; }
+    h2 { margin: 0 0 .4rem; color: #2457C5; font-size: 1.22rem; }
     p, ol, ul { margin: .35rem 0; }
     ol, ul { padding-left: 1.5rem; }
     li + li { margin-top: .35rem; }
     button {
-      font: inherit; padding: .5rem 1rem; color: #fff; background: #165956;
+      font: inherit; padding: .5rem 1rem; color: #FFFFFF; background: #2457C5;
       border: 0; border-radius: .45rem; cursor: pointer;
     }
   </style>
+  <script>
+    const temaPagina = new URLSearchParams(location.search).get('theme');
+    if (temaPagina === 'dark' || temaPagina === 'light') document.documentElement.dataset.theme = temaPagina;
+  </script>
+  <link rel="stylesheet" href="/estilo-anunciayapp.css?v=90">
 </head>
 <body>
 <header>

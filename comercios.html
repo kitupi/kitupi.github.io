@@ -7,19 +7,24 @@
 <title>Registrá tu comercio · AnunciaYapp</title>
 <script>if(new URLSearchParams(location.search).get('app')==='1')document.documentElement.classList.add('en-app');</script>
 <style>
-*{box-sizing:border-box}html{scroll-padding-top:8rem}body{margin:0;color:#233c3a;background:linear-gradient(145deg,#e7f3ed,#f8f4ea);font:1rem/1.6 system-ui,sans-serif}
-header{position:sticky;top:0;z-index:1;background:#164c4a;color:white;border-bottom:3px solid #e5b46e;padding:.65rem max(1rem,calc((100% - 44rem)/2))}
+*{box-sizing:border-box}html{scroll-padding-top:8rem}body{margin:0;color:#1E293B;background:linear-gradient(145deg,#E9EEF7,#F5F7FC);font:1rem/1.6 system-ui,sans-serif}
+header{position:sticky;top:0;z-index:1;background:#2457C5;color:white;border-bottom:3px solid #B9D0FF;padding:.65rem max(1rem,calc((100% - 44rem)/2))}
 h1{font-size:1.35rem;line-height:1.3;margin:0}.en-app h1{display:none}
-nav{display:flex;flex-wrap:wrap;gap:.25rem 1rem}nav a{display:inline-flex;align-items:center;min-height:2.75rem;color:#fff;font-size:.85rem}
-main{max-width:46rem;margin:auto;padding:1rem}section{background:#fffefa;border:1px solid #ccdcd5;border-radius:1rem;padding:1.25rem;margin-bottom:1rem}
-h2{color:#155552;font-size:1.25rem;line-height:1.3;margin:0 0 .65rem}p{margin:.65rem 0}ul,ol{padding-left:1.3rem}li+li{margin-top:.5rem}
-.badge{display:inline-block;background:#f9e8ca;color:#64441b;font-size:.8rem;font-weight:700;padding:.25rem .65rem;border-radius:2rem;margin:0 0 .75rem}
-.lead{font-size:1.15rem}.note{border-left:3px solid #bc8c43;padding-left:.8rem}
-a{color:#155552;overflow-wrap:anywhere}a:focus-visible{outline:3px solid #bc8c43;outline-offset:4px}
-.cta{display:inline-flex;align-items:center;justify-content:center;min-height:3rem;padding:.65rem 1.2rem;background:#165956;color:white;text-decoration:none;border-radius:.6rem;font-weight:700}
+nav{display:flex;flex-wrap:wrap;gap:.25rem 1rem}nav a{display:inline-flex;align-items:center;min-height:2.75rem;color:#FFFFFF;font-size:.85rem}
+main{max-width:46rem;margin:auto;padding:1rem}section{background:#FFFFFF;border:1px solid #C7D3E4;border-radius:1rem;padding:1.25rem;margin-bottom:1rem}
+h2{color:#2457C5;font-size:1.25rem;line-height:1.3;margin:0 0 .65rem}p{margin:.65rem 0}ul,ol{padding-left:1.3rem}li+li{margin-top:.5rem}
+.badge{display:inline-block;background:#DCE8FF;color:#18356B;font-size:.8rem;font-weight:700;padding:.25rem .65rem;border-radius:2rem;margin:0 0 .75rem}
+.lead{font-size:1.15rem}.note{border-left:3px solid #6D91D6;padding-left:.8rem}
+a{color:#2457C5;overflow-wrap:anywhere}a:focus-visible{outline:3px solid #6D91D6;outline-offset:4px}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:3rem;padding:.65rem 1.2rem;background:#2457C5;color:white;text-decoration:none;border-radius:.6rem;font-weight:700}
 footer{font-size:.85rem;text-align:center;padding:.5rem 0 1.5rem}
-@media(prefers-color-scheme:dark){body{background:#142523;color:#e3efeb}section{background:#1d3330;border-color:#46615b}h2,a{color:#a7e1d4}.cta{background:#a7e1d4;color:#142523}nav a{color:white}.badge{background:#4e3b20;color:#ffe1ae}}
+@media(prefers-color-scheme:dark){body{background:#111827;color:#EEF2F8}section{background:#1B2435;border-color:#53627A}h2,a{color:#A9C6FF}.cta{background:#A9C6FF;color:#111827}nav a{color:white}.badge{background:#18356B;color:#DCE8FF}}
 </style>
+  <script>
+    const temaPagina = new URLSearchParams(location.search).get('theme');
+    if (temaPagina === 'dark' || temaPagina === 'light') document.documentElement.dataset.theme = temaPagina;
+  </script>
+  <link rel="stylesheet" href="/estilo-anunciayapp.css?v=90">
 </head>
 <body>
 <header><h1>Registrá tu comercio</h1><nav aria-label="Secciones"><a href="#propuesta">Propuesta</a><a href="#pasos">Registro</a><a href="#privacidad">Confidencialidad</a><a href="#solicitud">Contacto</a></nav></header>
