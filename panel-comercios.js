@@ -9,7 +9,24 @@ const $=id=>document.getElementById(id),fecha=v=>v?new Date(v).toLocaleString('e
 let lista=[],cursor=null,actual=null,ocupado=false,epoch=0,pestana='pendientes';
 prepararSelectores();
 function mensaje(t){$('estado').textContent=t;}
-async function ejecutar(fn){if(ocupado)return;ocupado=true;document.querySelectorAll('button').forEach(b=>b.disabled=true);try{await fn();}catch(e){mensaje(e.message || 'No se pudo completar la operación');}finally{ocupado=false;document.querySelectorAll('button').forEach(b=>b.disabled=false);}}
+function mensajeAlta(texto) {
+  const estado = $('estadoCrear');
+  estado.textContent = texto;
+  estado.hidden = !texto;
+}
+async function ejecutar(fn, informarError = mensaje) {
+  if (ocupado) return;
+  ocupado = true;
+  document.querySelectorAll('button').forEach(b => b.disabled = true);
+  try {
+    await fn();
+  } catch (e) {
+    informarError(e.message || 'No se pudo completar la operación');
+  } finally {
+    ocupado = false;
+    document.querySelectorAll('button').forEach(b => b.disabled = false);
+  }
+}
 async function api(d){return (await call(d)).data;}
 function datos(form){const d=Object.fromEntries(new FormData(form));if(d.domicilios)d.domicilios=d.domicilios.split('\n').map(s=>s.trim()).filter(Boolean);return {...d,...datosSeleccionados(form)};}
 async function copiar(texto){try{await navigator.clipboard.writeText(texto);mensaje('Copiado');}catch{window.prompt('Copiá este texto:',texto);}}
@@ -119,24 +136,37 @@ function mostrarCodigo(r) {
 }
 $('entrar').onclick=()=>ejecutar(async()=>{await setPersistence(auth,browserSessionPersistence);await signInWithPopup(auth,new GoogleAuthProvider());});
 $('salir').onclick=()=>ejecutar(()=>signOut(auth));
-onAuthStateChanged(auth,async u=>{const version=++epoch;lista=[];actual=null;cursor=null;$('panel').hidden=true;$('detalle').hidden=true;$('lista').replaceChildren();$('equipo').replaceChildren();$('historial').replaceChildren();$('pagos').replaceChildren();$('crear').reset();$('editar').reset();$('codigoSalida').close();$('codigo').textContent='';$('acceso').hidden=!!u;$('salir').hidden=!u;if(!u)return;try{const t=await u.getIdTokenResult(true);if(version!==epoch)return;if(t.claims.operadorComercios!==true){mensaje('Esta cuenta no tiene permiso de operador. Cerrá sesión para usar otra.');return;}await cargarSelectores(app);if(version!==epoch)return;$('panel').hidden=false;await cargar();mensaje('Sesión autorizada.');}catch(e){mensaje(e.message);}});
+onAuthStateChanged(auth,async u=>{const version=++epoch;lista=[];actual=null;cursor=null;$('panel').hidden=true;$('detalle').hidden=true;$('lista').replaceChildren();$('equipo').replaceChildren();$('historial').replaceChildren();$('pagos').replaceChildren();$('crear').reset();mensajeAlta('');$('editar').reset();$('codigoSalida').close();$('codigo').textContent='';$('acceso').hidden=!!u;$('salir').hidden=!u;if(!u)return;try{const t=await u.getIdTokenResult(true);if(version!==epoch)return;if(t.claims.operadorComercios!==true){mensaje('Esta cuenta no tiene permiso de operador. Cerrá sesión para usar otra.');return;}await cargarSelectores(app);if(version!==epoch)return;$('panel').hidden=false;await cargar();mensaje('Sesión autorizada.');}catch(e){mensaje(e.message);}});
 $('tabPendientes').onclick=()=>{pestana='pendientes';pintar();};
 $('tabRegistrados').onclick=()=>{pestana='registrados';pintar();};
 $('orden').onchange=pintar;
 $('filtro').oninput=pintar;$('recargar').onclick=()=>ejecutar(()=>cargar());$('mas').onclick=()=>ejecutar(()=>cargar(true));
 $('crear').onsubmit = e => {
   e.preventDefault();
+  const form = e.currentTarget;
+  mensajeAlta('');
   ejecutar(async () => {
-    const d = datos(e.target);
+    const d = datos(form);
+    d.cuit = d.cuit.replace(/[-\s]/g, '');
+    if (!/^[0-9]{11}$/.test(d.cuit)) {
+      mensajeAlta('El CUIT debe tener 11 dígitos. Revisalo con la constancia de ARCA.');
+      form.elements.cuit.focus();
+      return;
+    }
     if (!confirm('¿Guardar «' + d.nombre + '» (CUIT ' + d.cuit + ') y generar su código de activación?')) return;
+    mensajeAlta('Generando el código…');
     const r = await api({accion:'crearConCodigo', ...d});
-    e.target.reset();
+    form.reset();
     pestana = 'pendientes';
     mostrarCodigo(r);
-    await cargar();
-    await abrir(r.comercioId);
-    mensaje('Comercio pendiente de activación.');
-  });
+    mensajeAlta('El comercio quedó pendiente de activación.');
+    try {
+      await cargar();
+      await abrir(r.comercioId);
+    } catch (e) {
+      mensaje('El comercio se guardó. Pulsá Actualizar para volver a cargar la lista.');
+    }
+  }, mensajeAlta);
 };
 $('editar').onsubmit=e=>{e.preventDefault();ejecutar(async()=>{const d=datos(e.target);await api({accion:'datos',comercioId:actual.cuit,cuit:actual.cuit,...d});await abrir(actual.cuit);await cargar();mensaje('Datos protegidos actualizados.');});};
 $('emitir').onclick = () => {
