@@ -272,6 +272,10 @@ function pintar() {
         cantidad(c.impacto?.seguimientos) +
         (c.impacto?.parcial ? " *" : ""),
     );
+    const actuales = document.createElement("small");
+    actuales.style.display = "block";
+    actuales.textContent = "Seguidores actuales de productos: " + cantidad(c.seguidoresActuales);
+    impacto.append(actuales);
     impacto.title = c.impacto
       ? "Mes " +
         c.impacto.numero +

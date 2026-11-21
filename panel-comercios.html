@@ -38,7 +38,7 @@ th[aria-sort="ascending"] button::after{content:" ↑"}th[aria-sort="descending"
 <div>Total de comercios<div id="totalComercios" class="dato-grande">—</div></div>
 <div>En estado Pago<div id="porcentajePago" class="dato-grande">—</div></div>
 <div>En estado Prueba<div id="porcentajePrueba" class="dato-grande">—</div></div>
-</div><h2>Top 3 por seguidores actuales</h2><ol id="topComercios" class="top-lista"></ol><p id="alcanceResumen" class="tabla-info"></p></section>
+</div><h2>Top 3 por seguidores actuales de productos</h2><ol id="topComercios" class="top-lista"></ol><p id="alcanceResumen" class="tabla-info"></p></section>
 <section><h2>Comercios</h2><label>Filtrar por nombre, CUIT o ubicación<input id="filtro" type="search" placeholder="Buscar comercio"></label><div class="actions"><button id="recargar">Actualizar</button></div>
 <p id="conteoTabla" class="tabla-info" role="status"></p>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Tabla de comercios"><table><thead><tr>
@@ -51,7 +51,7 @@ th[aria-sort="ascending"] button::after{content:" ↑"}th[aria-sort="descending"
 <th scope="col"><button data-orden="impacto" title="Ordenar por vistas del período y luego seguimientos">Impacto</button></th>
 <th scope="col">Histórico</th><th scope="col">Acción</th>
 </tr></thead><tbody id="filasComercios"></tbody></table></div>
-<p class="tabla-info">Impacto · v: vistas y s: nuevos seguimientos del período mensual desde la activación. Top 3 usa los seguidores actuales. Las cifras parciales se identifican con un asterisco.</p>
+<p class="tabla-info">Impacto · v: vistas y s: nuevos seguimientos del período mensual desde la activación. El total actual suma los seguidores de los productos; una persona que sigue dos productos cuenta dos veces. Las cifras parciales se identifican con un asterisco.</p>
 </section></div></div>
 <dialog id="fichaComercio"><div class="dialog-header"><h2>Datos del comercio</h2><button id="cerrarFicha" class="small muted">Cerrar</button></div><section id="detalle" hidden><h2 id="nombreDetalle"></h2><p id="resumen"></p><div id="equipo"></div>
 <h3>Código de activación</h3><div id="pendientes"></div>
@@ -66,4 +66,4 @@ th[aria-sort="ascending"] button::after{content:" ↑"}th[aria-sort="descending"
 <div class="acciones-periodo"><button id="deshabilitar" class="danger">Deshabilitar</button><button id="gracia">Gracia</button></div>
 <button id="cerrarAccion" class="small muted">Cerrar</button></dialog>
 <dialog id="codigoSalida"><h2>Código de activación</h2><p class="code" id="codigo"></p><p id="venceCodigo"></p><p>Se muestra una sola vez. Copialo antes de cerrar. Reemplazarlo invalida el anterior. Enviáselo a la persona autorizada para administrar el comercio.</p><div class="actions"><button id="copiarCodigo">Copiar código</button><button id="cerrarCodigo" class="muted">Cerrar</button></div></dialog>
-<script type="module" src="panel-comercios.js?v=102"></script></main></body></html>
+<script type="module" src="panel-comercios.js?v=103"></script></main></body></html>
