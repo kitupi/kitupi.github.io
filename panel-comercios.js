@@ -3,7 +3,7 @@ import {
   cargarSelectores,
   datosSeleccionados,
   mostrarSeleccion,
-} from "./selectores-comercios.js?v=80";
+} from "./selectores-comercios.js?v=112";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import {
   getAuth,
@@ -96,8 +96,7 @@ async function ejecutar(fn, informarError = mensaje) {
 }
 function datos(form) {
   const d = Object.fromEntries(new FormData(form));
-  if (d.domicilios)
-    d.domicilios = d.domicilios
+  d.domicilios = (d.domicilios || "")
       .split("\n")
       .map((s) => s.trim())
       .filter(Boolean);
@@ -811,3 +810,4 @@ setInterval(() => {
     estadoAcciones();
   }
 }, 60000);
+
