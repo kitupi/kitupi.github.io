@@ -4,6 +4,7 @@
   --ay-surface: #FFFFFF;
   --ay-surface-soft: #E9EEF7;
   --ay-text: #1E293B;
+  --ay-emphasis: #9C2458;
   --ay-muted: #52627A;
   --ay-blue: #2457C5;
   --ay-heading: #2457C5;
@@ -21,6 +22,7 @@
   --ay-surface: #1B2435;
   --ay-surface-soft: #29354A;
   --ay-text: #EEF2F8;
+  --ay-emphasis: #FFD1DC;
   --ay-muted: #C2CCDA;
   --ay-blue: #18356B;
   --ay-heading: #A9C6FF;
@@ -41,6 +43,7 @@
     --ay-surface: #1B2435;
     --ay-surface-soft: #29354A;
     --ay-text: #EEF2F8;
+  --ay-emphasis: #FFD1DC;
     --ay-muted: #C2CCDA;
     --ay-blue: #18356B;
   --ay-heading: #A9C6FF;
@@ -112,3 +115,10 @@ input::placeholder, textarea::placeholder { color: var(--ay-muted) !important; }
   outline-offset: 3px;
 }
 ::selection { color: #FFFFFF; background: #2457C5; }
+
+
+/* pre113: la negrita también se distingue por color, en ambos temas. */
+b, strong { color: var(--ay-emphasis); }
+/* Estas superficies mantienen fondo azul en día y noche. */
+header b, header strong, button b, button strong,
+.cta b, .cta strong, .button b, .button strong { color: #FFD1DC; }
