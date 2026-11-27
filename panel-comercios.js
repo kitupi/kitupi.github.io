@@ -1,3 +1,4 @@
+import { limpiar, validar, conservar } from "./texto-campos.mjs?v=114";
 import {
   prepararSelectores,
   cargarSelectores,
@@ -96,10 +97,11 @@ async function ejecutar(fn, informarError = mensaje) {
 }
 function datos(form) {
   const d = Object.fromEntries(new FormData(form));
-  d.domicilios = (d.domicilios || "")
-      .split("\n")
-      .map((s) => s.trim())
-      .filter(Boolean);
+  const anterior = form.id === "editar" ? actual : null;
+  d.nombre = conservar(d.nombre, anterior?.nombre, "nombre", "Nombre comercial");
+  d.domicilios = limpiar(d.domicilios || "", true).split("\n").map(s => s.trim()).filter(Boolean)
+      .map(v => anterior?.domicilios?.includes(v) ? v : validar(v, "domicilio", "Domicilio"));
+  if(d.domicilios.length > 10) throw Error("Indicá hasta 10 domicilios");
   return { ...d, ...datosSeleccionados(form) };
 }
 async function copiar(texto) {
@@ -359,10 +361,11 @@ async function abrir(id) {
       m.email,
       $("equipo"),
     );
-  for (const k of ["nombre", "titular", "rubro", "localidad", "domicilios"])
-    $("editar").elements[k].value = Array.isArray(actual[k])
-      ? actual[k].join("\n")
-      : actual[k] || "";
+  for (const k of ["nombre", "titular", "rubro", "localidad", "domicilios"]){
+    const campo=$("editar").elements[k];
+    campo.value = Array.isArray(actual[k]) ? actual[k].join("\n") : actual[k] || "";
+    if(k==="nombre"||k==="domicilios")campo.dispatchEvent(new Event("input",{bubbles:true}));
+  }
   mostrarSeleccion($("editar"), actual);
   $("historial").replaceChildren();
   for (const h of r.historial) {
@@ -811,3 +814,36 @@ setInterval(() => {
   }
 }, 60000);
 
+
+
+// pre114: contadores, aviso de pegado excesivo y conversión de saltos en nombres.
+for(const formId of ["crear","editar"]){
+  const form=document.getElementById(formId);
+  for(const key of ["nombre","domicilios"]){
+    const campo=form.elements[key], max=key==="nombre"?60:1509;
+    campo.removeAttribute("maxlength");
+    const contador=document.createElement("small");campo.after(contador);
+    const actualizar=()=>{contador.textContent=[...campo.value].length+" / "+max+" caracteres";};
+    campo.addEventListener("input",()=>{campo.setCustomValidity("");actualizar();});
+    campo.addEventListener("beforeinput",e=>{
+      if(!e.data)return;
+      const total=campo.value.slice(0,campo.selectionStart)+e.data+campo.value.slice(campo.selectionEnd);
+      if([...total].length>max&&[...total].length>[...campo.value].length){
+        e.preventDefault();campo.setCustomValidity("Máximo "+max+" caracteres");campo.reportValidity();
+      }
+    });
+    campo.addEventListener("paste",e=>{
+      e.preventDefault();
+      try{
+        const entrada=limpiar(e.clipboardData.getData("text"),key==="domicilios");
+        const total=campo.value.slice(0,campo.selectionStart)+entrada+campo.value.slice(campo.selectionEnd);
+        if([...total].length>max&&[...total].length>[...campo.value].length)throw Error("Máximo "+max+" caracteres. Acortá el texto pegado");
+        if(key==="nombre")validar(total,"nombre","Nombre comercial");
+        else entrada.split("\n").filter(Boolean).forEach(v=>validar(v,"domicilio","Domicilio"));
+        campo.setRangeText(entrada,campo.selectionStart,campo.selectionEnd,"end");
+        campo.dispatchEvent(new Event("input",{bubbles:true}));
+      }catch(error){campo.setCustomValidity(error.message);campo.reportValidity();}
+    });actualizar();
+    form.addEventListener("reset",()=>setTimeout(actualizar));
+  }
+}
